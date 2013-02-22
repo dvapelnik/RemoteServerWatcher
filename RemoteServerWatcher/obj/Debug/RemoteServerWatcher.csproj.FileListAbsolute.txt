@@ -1,0 +1,10 @@
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\RemoteServerWatcher.exe.config
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\RemoteServerWatcher.exe
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\RemoteServerWatcher.pdb
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.csprojResolveAssemblyReference.cache
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.Properties.Resources.resources
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.csproj.GenerateResource.Cache
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.exe
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.pdb
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.MainForm.resources
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.RemoteServers.resources
