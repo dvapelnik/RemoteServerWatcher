@@ -12,7 +12,13 @@ using System.Xml.Serialization;
 
 namespace RemoteServerWatcher {
     public class Storage {
+        #region options
         public List<Option> options;
+
+        public bool OptionsIsNullOrEmpty() {
+            return (this.options == null || this.options.Count == 0);
+        }
+
         public string GetOption(string key) {
             if (String.IsNullOrEmpty(key)) throw new ArgumentNullException("Argument is empty");
             foreach (Option option in this.options) {
@@ -30,13 +36,66 @@ namespace RemoteServerWatcher {
             this.options.Add(new Option(key, value));
         }
 
-        public void LoadOptions(string hash) {
-            if (String.IsNullOrEmpty(hash)) throw new ArgumentNullException("Hash is null or empty");
-            throw new Exception();
+        public void RemoveOption(string key) {
+            foreach (Option _option in this.options) {
+                if (_option.key == key) {
+                    this.options.Remove(_option);
+                    break;
+                }
+            }
         }
 
-        public void SaveOptions() { 
-
+        public string[] GetOptionKeys() {
+            List<string> _keys = new List<string>();
+            foreach (Option _option in this.options) {
+                _keys.Add(_option.key);
+            }
+            return _keys.ToArray();
         }
+        #endregion
+
+        #region servers
+        public List<Server> servers;
+
+        public bool ServersNullOrEmpty() {
+            return (this.servers == null || this.servers.Count == 0);
+        }
+
+        public Server GetServer(string host) {
+            foreach (Server _server in this.servers) {
+                if (_server.host == host) {
+                    return _server;
+                }
+            }
+            return null;
+        }
+
+        public void AddServer(Server server) {
+            if (this.servers == null) {
+                this.servers = new List<Server>();
+            }
+
+            this.servers.Add(server);
+        }
+
+        public void RemoveServer(string host) {
+            foreach (Server _server in this.servers) {
+                if (_server.host == host) {
+                    this.servers.Remove(_server);
+                    break;
+                }
+            }
+        }
+
+        public string[] GetHosts() {
+            List<string> _hosts = new List<string>();
+
+            foreach (Server _server in this.servers) {
+                _hosts.Add(_server.host);
+            }
+
+            return _hosts.ToArray();
+        }
+        #endregion
     }
 }

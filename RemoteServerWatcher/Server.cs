@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace RemoteServerWatcher {
-    class Server {
+    public class Server {
         public string host = String.Empty;
         public string userLogin = String.Empty;
         public string userPassword = String.Empty;
@@ -14,6 +14,8 @@ namespace RemoteServerWatcher {
         public string getHashedObject() {
             return String.Join(">>", new string[] { this.host, this.userLogin, this.userPassword, this.isEnabled ? "1" : "0" });
         }
+
+        public Server() { }
 
         public Server(string host, string userLogin, string userPassword) {
             this.host = host;

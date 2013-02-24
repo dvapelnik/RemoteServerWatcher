@@ -26,14 +26,16 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.groupBoxMainGroup = new System.Windows.Forms.GroupBox();
-            this.listBoxServers = new System.Windows.Forms.ListBox();
-            this.buttonSaveServer = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.labelServerName = new System.Windows.Forms.Label();
-            this.labelLOgin = new System.Windows.Forms.Label();
-            this.textBoxLogin = new System.Windows.Forms.TextBox();
-            this.labelPassword = new System.Windows.Forms.Label();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.textBoxLogin = new System.Windows.Forms.TextBox();
+            this.labelLOgin = new System.Windows.Forms.Label();
+            this.labelServerName = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.buttonSaveServer = new System.Windows.Forms.Button();
+            this.listBoxServers = new System.Windows.Forms.ListBox();
+            this.buttonTestConnection = new System.Windows.Forms.Button();
+            this.checkBoxServerEnabled = new System.Windows.Forms.CheckBox();
             this.groupBoxMainGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,6 +62,8 @@
             // 
             // groupBoxMainGroup
             // 
+            this.groupBoxMainGroup.Controls.Add(this.checkBoxServerEnabled);
+            this.groupBoxMainGroup.Controls.Add(this.buttonTestConnection);
             this.groupBoxMainGroup.Controls.Add(this.textBoxPassword);
             this.groupBoxMainGroup.Controls.Add(this.labelPassword);
             this.groupBoxMainGroup.Controls.Add(this.textBoxLogin);
@@ -75,54 +79,13 @@
             this.groupBoxMainGroup.TabStop = false;
             this.groupBoxMainGroup.Text = "Servers";
             // 
-            // listBoxServers
+            // textBoxPassword
             // 
-            this.listBoxServers.FormattingEnabled = true;
-            this.listBoxServers.Location = new System.Drawing.Point(6, 23);
-            this.listBoxServers.Name = "listBoxServers";
-            this.listBoxServers.Size = new System.Drawing.Size(203, 173);
-            this.listBoxServers.TabIndex = 0;
-            // 
-            // buttonSaveServer
-            // 
-            this.buttonSaveServer.Location = new System.Drawing.Point(378, 173);
-            this.buttonSaveServer.Name = "buttonSaveServer";
-            this.buttonSaveServer.Size = new System.Drawing.Size(75, 23);
-            this.buttonSaveServer.TabIndex = 1;
-            this.buttonSaveServer.Text = "Save";
-            this.buttonSaveServer.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(275, 23);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(178, 20);
-            this.textBox1.TabIndex = 2;
-            // 
-            // labelServerName
-            // 
-            this.labelServerName.AutoSize = true;
-            this.labelServerName.Location = new System.Drawing.Point(231, 26);
-            this.labelServerName.Name = "labelServerName";
-            this.labelServerName.Size = new System.Drawing.Size(38, 13);
-            this.labelServerName.TabIndex = 3;
-            this.labelServerName.Text = "Name:";
-            // 
-            // labelLOgin
-            // 
-            this.labelLOgin.AutoSize = true;
-            this.labelLOgin.Location = new System.Drawing.Point(233, 52);
-            this.labelLOgin.Name = "labelLOgin";
-            this.labelLOgin.Size = new System.Drawing.Size(36, 13);
-            this.labelLOgin.TabIndex = 4;
-            this.labelLOgin.Text = "Login:";
-            // 
-            // textBoxLogin
-            // 
-            this.textBoxLogin.Location = new System.Drawing.Point(275, 49);
-            this.textBoxLogin.Name = "textBoxLogin";
-            this.textBoxLogin.Size = new System.Drawing.Size(178, 20);
-            this.textBoxLogin.TabIndex = 5;
+            this.textBoxPassword.Location = new System.Drawing.Point(275, 75);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(178, 20);
+            this.textBoxPassword.TabIndex = 7;
             // 
             // labelPassword
             // 
@@ -133,12 +96,73 @@
             this.labelPassword.TabIndex = 6;
             this.labelPassword.Text = "Password:";
             // 
-            // textBoxPassword
+            // textBoxLogin
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(275, 75);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(178, 20);
-            this.textBoxPassword.TabIndex = 7;
+            this.textBoxLogin.Location = new System.Drawing.Point(275, 49);
+            this.textBoxLogin.Name = "textBoxLogin";
+            this.textBoxLogin.Size = new System.Drawing.Size(178, 20);
+            this.textBoxLogin.TabIndex = 5;
+            // 
+            // labelLOgin
+            // 
+            this.labelLOgin.AutoSize = true;
+            this.labelLOgin.Location = new System.Drawing.Point(233, 52);
+            this.labelLOgin.Name = "labelLOgin";
+            this.labelLOgin.Size = new System.Drawing.Size(36, 13);
+            this.labelLOgin.TabIndex = 4;
+            this.labelLOgin.Text = "Login:";
+            // 
+            // labelServerName
+            // 
+            this.labelServerName.AutoSize = true;
+            this.labelServerName.Location = new System.Drawing.Point(231, 26);
+            this.labelServerName.Name = "labelServerName";
+            this.labelServerName.Size = new System.Drawing.Size(38, 13);
+            this.labelServerName.TabIndex = 3;
+            this.labelServerName.Text = "Name:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(275, 23);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(178, 20);
+            this.textBox1.TabIndex = 2;
+            // 
+            // buttonSaveServer
+            // 
+            this.buttonSaveServer.Location = new System.Drawing.Point(378, 173);
+            this.buttonSaveServer.Name = "buttonSaveServer";
+            this.buttonSaveServer.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveServer.TabIndex = 1;
+            this.buttonSaveServer.Text = "Save";
+            this.buttonSaveServer.UseVisualStyleBackColor = true;
+            // 
+            // listBoxServers
+            // 
+            this.listBoxServers.FormattingEnabled = true;
+            this.listBoxServers.Location = new System.Drawing.Point(6, 23);
+            this.listBoxServers.Name = "listBoxServers";
+            this.listBoxServers.Size = new System.Drawing.Size(203, 173);
+            this.listBoxServers.TabIndex = 0;
+            // 
+            // buttonTestConnection
+            // 
+            this.buttonTestConnection.Location = new System.Drawing.Point(337, 101);
+            this.buttonTestConnection.Name = "buttonTestConnection";
+            this.buttonTestConnection.Size = new System.Drawing.Size(116, 23);
+            this.buttonTestConnection.TabIndex = 8;
+            this.buttonTestConnection.Text = "Test Connection";
+            this.buttonTestConnection.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxServerEnabled
+            // 
+            this.checkBoxServerEnabled.AutoSize = true;
+            this.checkBoxServerEnabled.Location = new System.Drawing.Point(255, 105);
+            this.checkBoxServerEnabled.Name = "checkBoxServerEnabled";
+            this.checkBoxServerEnabled.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxServerEnabled.TabIndex = 9;
+            this.checkBoxServerEnabled.Text = "Is Enabled";
+            this.checkBoxServerEnabled.UseVisualStyleBackColor = true;
             // 
             // RemoteServers
             // 
@@ -153,6 +177,7 @@
             this.MaximumSize = new System.Drawing.Size(500, 300);
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "RemoteServers";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Remote servers";
             this.groupBoxMainGroup.ResumeLayout(false);
             this.groupBoxMainGroup.PerformLayout();
@@ -173,5 +198,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button buttonSaveServer;
         private System.Windows.Forms.ListBox listBoxServers;
+        private System.Windows.Forms.CheckBox checkBoxServerEnabled;
+        private System.Windows.Forms.Button buttonTestConnection;
     }
 }
