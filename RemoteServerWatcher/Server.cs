@@ -4,35 +4,26 @@ using System.Collections.Generic;
 
 namespace RemoteServerWatcher {
     public class Server {
+        public string name = String.Empty;
         public string host = String.Empty;
         public string userLogin = String.Empty;
         public string userPassword = String.Empty;
-        public bool isEnabled = false;
+        public bool enabled = false;
 
         private static List<Server> servers;
 
         public string getHashedObject() {
-            return String.Join(">>", new string[] { this.host, this.userLogin, this.userPassword, this.isEnabled ? "1" : "0" });
+            return String.Join(">>", new string[] { this.host, this.userLogin, this.userPassword, this.enabled ? "1" : "0" });
         }
 
         public Server() { }
 
-        public Server(string host, string userLogin, string userPassword) {
+        public Server(string name, string host, string userLogin, string userPassword, bool enabled = true) {
+            this.name = name;
             this.host = host;
             this.userLogin = userLogin;
             this.userPassword = userPassword;
-        }
-
-        public Server(string hash) {
-            string[] _arr = hash.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
-            if (_arr.Length == 4) {
-                this.host = _arr[0];
-                this.userLogin = _arr[1];
-                this.userPassword = _arr[2];
-                this.isEnabled = _arr[3] == "1";
-            } else {
-                throw new ServerException("Parse error");
-            }
+            this.enabled = enabled;
         }
 
         public static Server GetSeverByName(string name){
@@ -45,6 +36,10 @@ namespace RemoteServerWatcher {
 
         public static string[] GetServerNames(){
             throw new Exception();
+        }
+
+        public override string ToString() {
+            return this.name;
         }
     }
 

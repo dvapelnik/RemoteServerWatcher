@@ -17,6 +17,7 @@ namespace RemoteServerWatcher {
         internal Storage storage = null;
 
         public MainForm() {
+            this.Name = "MainForm";
             this.scope = DataProtectionScope.CurrentUser;
             this.cryptor = new Cryptor(this.scope);
             this.storage = new Storage();
@@ -34,6 +35,7 @@ namespace RemoteServerWatcher {
             InitializeComponent();
         }
 
+        #region Options and servers
         private void LoadOptions() {
             List<Option> _options = (List<Option>)this.DeserializeFromXml(this.dataStorageFileNameOptions, typeof(List<Option>));
             this.storage.options = new List<Option>();
@@ -49,9 +51,11 @@ namespace RemoteServerWatcher {
 
             foreach (Server _server in _servers) {
                 this.storage.servers.Add(new Server(
+                        _server.name,
                         _server.host,
                         this.cryptor.Decrypt(_server.userLogin),
-                        this.cryptor.Decrypt(_server.userPassword)
+                        this.cryptor.Decrypt(_server.userPassword),
+                        _server.enabled
                     ));
             }
         }
@@ -84,9 +88,11 @@ namespace RemoteServerWatcher {
 
                 foreach (Server _server in servers) {
                     _servers.Add(new Server(
+                            _server.name,
                             _server.host,
                             this.cryptor.Encrypt(_server.userLogin),
-                            this.cryptor.Encrypt(_server.userPassword)
+                            this.cryptor.Encrypt(_server.userPassword),
+                            _server.enabled
                         ));
                 }
 
@@ -107,8 +113,8 @@ namespace RemoteServerWatcher {
 
         }
 
-        private object DeserializeFromXml(string fileName, Type t) { 
-            if(!File.Exists(fileName)){
+        private object DeserializeFromXml(string fileName, Type t) {
+            if (!File.Exists(fileName)) {
                 throw new FileNotFoundException();
             }
 
@@ -130,6 +136,7 @@ namespace RemoteServerWatcher {
 
             return list;
         }
+        #endregion
 
         #region Form events
         private void remoteServersToolStripMenuItem_Click(object sender, EventArgs e) {
