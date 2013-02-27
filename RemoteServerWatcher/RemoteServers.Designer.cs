@@ -204,7 +204,7 @@
             this.buttonSaveServer.Name = "buttonSaveServer";
             this.buttonSaveServer.Size = new System.Drawing.Size(75, 23);
             this.buttonSaveServer.TabIndex = 7;
-            this.buttonSaveServer.Text = "Save";
+            this.buttonSaveServer.Text = "Update";
             this.buttonSaveServer.UseVisualStyleBackColor = true;
             this.buttonSaveServer.Click += new System.EventHandler(this.buttonSaveServer_Click);
             // 
