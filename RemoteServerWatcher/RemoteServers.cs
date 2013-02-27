@@ -13,15 +13,13 @@ namespace RemoteServerWatcher {
 
         private void UpdateServersInListBox() {
             MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
-            if (mainForm.storage.servers.Count != 0) {
-                listBoxServers.Items.Clear();
-                foreach (Server _server in mainForm.storage.servers) {
-                    listBoxServers.Items.Add(_server);
-                }
+            listBoxServers.Items.Clear();
+            foreach (Server _server in mainForm.storage.servers) {
+                listBoxServers.Items.Add(_server);
             }
         }
 
-        private void ClearFields(){
+        private void ClearFields() {
             foreach (Control _control in groupBoxMainGroup.Controls) {
                 if (_control is TextBox) (_control as TextBox).Clear();
                 if (_control is CheckBox) (_control as CheckBox).Checked = true;
@@ -61,6 +59,17 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonSaveServer_Click(object sender, EventArgs e) {
+            Server _server = (Server)listBoxServers.SelectedItem;
+            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
+            mainForm.storage.UpdateServer(_server.name, new Server(
+                textBoxName.Text,
+                textBoxHostName.Text,
+                textBoxLogin.Text,
+                textBoxPassword.Text,
+                checkBoxServerEnabled.Checked
+            ));
+            UpdateServersInListBox();
+            ClearFields();
         }
 
         private void listBoxServers_SelectedIndexChanged(object sender, EventArgs e) {
@@ -89,6 +98,11 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonServerRemove_Click(object sender, EventArgs e) {
+            Server _server = (Server)listBoxServers.SelectedItem;
+            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
+            mainForm.storage.RemoveServer(_server);
+            UpdateServersInListBox();
+            ClearFields();
         }
     }
 }
