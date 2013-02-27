@@ -26,6 +26,8 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.groupBoxMainGroup = new System.Windows.Forms.GroupBox();
+            this.buttonServerRemove = new System.Windows.Forms.Button();
+            this.buttonAddNewServer = new System.Windows.Forms.Button();
             this.labelHostName = new System.Windows.Forms.Label();
             this.textBoxHostName = new System.Windows.Forms.TextBox();
             this.checkBoxServerEnabled = new System.Windows.Forms.CheckBox();
@@ -38,8 +40,6 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.buttonSaveServer = new System.Windows.Forms.Button();
             this.listBoxServers = new System.Windows.Forms.ListBox();
-            this.buttonAddNewServer = new System.Windows.Forms.Button();
-            this.buttonServerRemove = new System.Windows.Forms.Button();
             this.groupBoxMainGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +49,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(391, 226);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 9;
+            this.buttonCancel.TabIndex = 11;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonOk_Click);
@@ -59,7 +59,7 @@
             this.buttonOk.Location = new System.Drawing.Point(310, 226);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
-            this.buttonOk.TabIndex = 8;
+            this.buttonOk.TabIndex = 10;
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
@@ -86,6 +86,26 @@
             this.groupBoxMainGroup.TabIndex = 2;
             this.groupBoxMainGroup.TabStop = false;
             this.groupBoxMainGroup.Text = "Servers";
+            // 
+            // buttonServerRemove
+            // 
+            this.buttonServerRemove.Location = new System.Drawing.Point(378, 178);
+            this.buttonServerRemove.Name = "buttonServerRemove";
+            this.buttonServerRemove.Size = new System.Drawing.Size(75, 23);
+            this.buttonServerRemove.TabIndex = 9;
+            this.buttonServerRemove.Text = "Remove";
+            this.buttonServerRemove.UseVisualStyleBackColor = true;
+            this.buttonServerRemove.Click += new System.EventHandler(this.buttonServerRemove_Click);
+            // 
+            // buttonAddNewServer
+            // 
+            this.buttonAddNewServer.Location = new System.Drawing.Point(297, 178);
+            this.buttonAddNewServer.Name = "buttonAddNewServer";
+            this.buttonAddNewServer.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddNewServer.TabIndex = 8;
+            this.buttonAddNewServer.Text = "Add new";
+            this.buttonAddNewServer.UseVisualStyleBackColor = true;
+            this.buttonAddNewServer.Click += new System.EventHandler(this.buttonAddNewServer_Click);
             // 
             // labelHostName
             // 
@@ -196,26 +216,6 @@
             this.listBoxServers.Size = new System.Drawing.Size(203, 173);
             this.listBoxServers.TabIndex = 0;
             this.listBoxServers.SelectedIndexChanged += new System.EventHandler(this.listBoxServers_SelectedIndexChanged);
-            // 
-            // buttonAddNewServer
-            // 
-            this.buttonAddNewServer.Location = new System.Drawing.Point(297, 178);
-            this.buttonAddNewServer.Name = "buttonAddNewServer";
-            this.buttonAddNewServer.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddNewServer.TabIndex = 12;
-            this.buttonAddNewServer.Text = "Add new";
-            this.buttonAddNewServer.UseVisualStyleBackColor = true;
-            this.buttonAddNewServer.Click += new System.EventHandler(this.buttonAddNewServer_Click);
-            // 
-            // buttonServerRemove
-            // 
-            this.buttonServerRemove.Location = new System.Drawing.Point(378, 178);
-            this.buttonServerRemove.Name = "buttonServerRemove";
-            this.buttonServerRemove.Size = new System.Drawing.Size(75, 23);
-            this.buttonServerRemove.TabIndex = 13;
-            this.buttonServerRemove.Text = "Remove";
-            this.buttonServerRemove.UseVisualStyleBackColor = true;
-            this.buttonServerRemove.Click += new System.EventHandler(this.buttonServerRemove_Click);
             // 
             // RemoteServers
             // 
