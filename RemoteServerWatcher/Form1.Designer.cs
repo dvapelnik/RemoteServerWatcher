@@ -26,6 +26,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.preToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +46,10 @@
             // fIleToolStripMenuItem
             // 
             this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.remoteServersToolStripMenuItem});
+            this.remoteServersToolStripMenuItem,
+            this.preToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.exitToolStripMenuItem});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fIleToolStripMenuItem.Text = "FIle";
@@ -54,11 +61,38 @@
             this.remoteServersToolStripMenuItem.Text = "Remote servers";
             this.remoteServersToolStripMenuItem.Click += new System.EventHandler(this.remoteServersToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Location = new System.Drawing.Point(12, 27);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(760, 522);
+            this.richTextBoxLog.TabIndex = 1;
+            this.richTextBoxLog.Text = "";
+            // 
+            // preToolStripMenuItem
+            // 
+            this.preToolStripMenuItem.Name = "preToolStripMenuItem";
+            this.preToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.preToolStripMenuItem.Text = "Preferences";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.richTextBoxLog);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
@@ -67,6 +101,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Remote server watcher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -79,6 +114,10 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fIleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteServersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.ToolStripMenuItem preToolStripMenuItem;
 
     }
 }

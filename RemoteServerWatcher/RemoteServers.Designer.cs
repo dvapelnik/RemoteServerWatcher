@@ -103,7 +103,7 @@
             this.buttonAddNewServer.Name = "buttonAddNewServer";
             this.buttonAddNewServer.Size = new System.Drawing.Size(75, 23);
             this.buttonAddNewServer.TabIndex = 8;
-            this.buttonAddNewServer.Text = "Add new";
+            this.buttonAddNewServer.Text = "Add";
             this.buttonAddNewServer.UseVisualStyleBackColor = true;
             this.buttonAddNewServer.Click += new System.EventHandler(this.buttonAddNewServer_Click);
             // 

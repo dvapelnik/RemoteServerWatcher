@@ -12,6 +12,8 @@ namespace RemoteServerWatcher {
 
         private static List<Server> servers;
 
+        internal Renci.SshNet.SshClient sshClient;
+
         public string getHashedObject() {
             return String.Join(">>", new string[] { this.host, this.userLogin, this.userPassword, this.enabled ? "1" : "0" });
         }
@@ -26,16 +28,41 @@ namespace RemoteServerWatcher {
             this.enabled = enabled;
         }
 
-        public static Server GetSeverByName(string name){
+        public static Server GetSeverByName(string name) {
             throw new Exception();
         }
 
-        public static void AddServer(Server server){
+        public static void AddServer(Server server) {
             throw new Exception();
         }
 
-        public static string[] GetServerNames(){
+        public static string[] GetServerNames() {
             throw new Exception();
+        }
+
+        internal void InitSshClient() {
+            this.sshClient = new Renci.SshNet.SshClient(this.host, this.userLogin, this.userPassword);
+            this.sshClient.Connect();
+        }
+
+        internal void UnInitSshClient() {
+            if (this.sshClient != null) {
+                this.sshClient.Disconnect();
+                this.sshClient.Dispose();
+            }
+        }
+
+        internal string GetCommandResult(string command) {
+            Renci.SshNet.SshCommand cmd = this.sshClient.CreateCommand(command);
+            return cmd.Execute();
+        }
+
+        internal double[] GetLoadAverage() {
+            return (new UptimeResult(this.host, this.GetCommandResult("uptime").Trim("\n".ToCharArray()))).loadAverage;
+        }
+
+        internal UptimeResult GetUptimeResult() {
+            return new UptimeResult(this.host, this.GetCommandResult("uptime").Trim("\n".ToCharArray()));
         }
 
         public override string ToString() {

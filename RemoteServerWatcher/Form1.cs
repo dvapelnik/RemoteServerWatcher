@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace RemoteServerWatcher {
     public partial class MainForm : Form {
@@ -15,12 +16,16 @@ namespace RemoteServerWatcher {
         private Cryptor cryptor;
 
         internal Storage storage = null;
+        internal Timer timer;
 
         public MainForm() {
             this.Name = "MainForm";
             this.scope = DataProtectionScope.LocalMachine;
             this.cryptor = new Cryptor(this.scope);
             this.storage = new Storage();
+
+
+            #region Servers and options file
             if (!File.Exists(this.dataStorageFileNameOptions)) {
                 this.GenerateDefaultOptions();
                 this.SaveOptionsToFile(this.dataStorageFileNameOptions, this.storage.options);
@@ -29,10 +34,25 @@ namespace RemoteServerWatcher {
                 this.GenerateDefaultServers();
                 this.SaveServersToFile(this.dataStorageFileNameServers, this.storage.servers);
             }
+            #endregion
 
             this.LoadOptions();
             this.LoadServers();
             InitializeComponent();
+
+            this.timer = new Timer() { Interval = Int32.Parse(this.storage.GetOption("timer-interval-seconds")) * 1000 };
+            this.timer.Tick += timer_Tick;
+            if (this.storage.GetOption("start-timer-on-load") == "1") {
+                this.timer.Start();
+            }
+        }
+
+        void timer_Tick(object sender, EventArgs e) {
+            foreach (Server _server in this.storage.servers) {
+                if (!_server.enabled) continue;
+                if (_server.sshClient == null) _server.InitSshClient();
+                richTextBoxLog.Text = _server.GetUptimeResult().ToString() + "\n" + richTextBoxLog.Text;
+            }
         }
 
         #region Options and servers
@@ -61,16 +81,19 @@ namespace RemoteServerWatcher {
         }
 
         private void GenerateDefaultOptions() {
-            //create empty data storage file with default options
             this.storage.AddOption("salt", "some-salt-for-test");
-            //throw new NotImplementedException();
+            this.storage.AddOption("timer-interval-seconds", "5");
+            this.storage.AddOption("start-timer-on-load", "1");
         }
 
         private void GenerateDefaultServers() {
             this.storage.servers = new List<Server>();
         }
 
-        private void SaveOptionsToFile(string fileName, List<Option> options) {
+        internal void SaveOptionsToFile(string fileName = null, List<Option> options = null) {
+            if (fileName == null) fileName = this.dataStorageFileNameOptions;
+            if (options == null) options = this.storage.options;
+
             if (options != null || options.Count != 0) {
                 List<Option> _options = new List<Option>();
 
@@ -82,7 +105,11 @@ namespace RemoteServerWatcher {
             }
         }
 
-        private void SaveServersToFile(string fileName, List<Server> servers) {
+        internal void SaveServersToFile(string fileName = null, List<Server> servers = null) {
+            if (fileName == null) fileName = this.dataStorageFileNameServers;
+
+            if (servers == null) servers = this.storage.servers;
+
             if (servers != null || servers.Count != 0) {
                 List<Server> _servers = new List<Server>();
 
@@ -141,6 +168,22 @@ namespace RemoteServerWatcher {
         #region Form events
         private void remoteServersToolStripMenuItem_Click(object sender, EventArgs e) {
             (new RemoteServers()).ShowDialog();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            this.timer.Stop();
+            this.timer.Dispose();
+
+            foreach (Server _server in this.storage.servers) {
+                _server.UnInitSshClient();
+            }
+
+            this.SaveOptionsToFile();
+            this.SaveServersToFile();
         }
         #endregion
     }

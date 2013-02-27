@@ -6,13 +6,15 @@ using Renci.SshNet.Common;
 
 namespace RemoteServerWatcher {
     public partial class RemoteServers : Form {
+        private MainForm mainForm;
+
         public RemoteServers(bool loadOptions = true) {
             InitializeComponent();
+            this.mainForm = (MainForm)Application.OpenForms["MainForm"];
             this.UpdateServersInListBox();
         }
 
         private void UpdateServersInListBox() {
-            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
             listBoxServers.Items.Clear();
             foreach (Server _server in mainForm.storage.servers) {
                 listBoxServers.Items.Add(_server);
@@ -27,6 +29,7 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonOk_Click(object sender, EventArgs e) {
+            mainForm.SaveServersToFile();
             this.Hide();
         }
 
@@ -60,7 +63,6 @@ namespace RemoteServerWatcher {
 
         private void buttonSaveServer_Click(object sender, EventArgs e) {
             Server _server = (Server)listBoxServers.SelectedItem;
-            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
             mainForm.storage.UpdateServer(_server.name, new Server(
                 textBoxName.Text,
                 textBoxHostName.Text,
@@ -74,19 +76,19 @@ namespace RemoteServerWatcher {
 
         private void listBoxServers_SelectedIndexChanged(object sender, EventArgs e) {
             Server _selectedServer = (sender as ListBox).SelectedItem as Server;
-            textBoxName.Text = _selectedServer.name;
-            textBoxHostName.Text = _selectedServer.host;
-            textBoxLogin.Text = _selectedServer.userLogin;
-            textBoxPassword.Text = _selectedServer.userPassword;
-            checkBoxServerEnabled.Checked = _selectedServer.enabled;
+            if (_selectedServer != null) {
+                textBoxName.Text = _selectedServer.name;
+                textBoxHostName.Text = _selectedServer.host;
+                textBoxLogin.Text = _selectedServer.userLogin;
+                textBoxPassword.Text = _selectedServer.userPassword;
+                checkBoxServerEnabled.Checked = _selectedServer.enabled;
+            }
         }
 
         private void buttonAddNewServer_Click(object sender, EventArgs e) {
             if (textBoxName.Text.Length == 0) {
                 textBoxName.Text = textBoxHostName.Text;
             }
-
-            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
 
             if (!mainForm.storage.ServerIsExists(textBoxName.Text)) {
                 mainForm.storage.AddServer(new Server(textBoxName.Text, textBoxHostName.Text, textBoxLogin.Text, textBoxPassword.Text));
@@ -99,7 +101,6 @@ namespace RemoteServerWatcher {
 
         private void buttonServerRemove_Click(object sender, EventArgs e) {
             Server _server = (Server)listBoxServers.SelectedItem;
-            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
             mainForm.storage.RemoveServer(_server);
             UpdateServersInListBox();
             ClearFields();
