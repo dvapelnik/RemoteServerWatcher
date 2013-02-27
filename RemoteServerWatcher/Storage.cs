@@ -75,12 +75,25 @@ namespace RemoteServerWatcher {
                 this.servers = new List<Server>();
             }
 
-            this.servers.Add(server);
+            if (!this.ServerIsExists(server.name)) {
+                this.servers.Add(server);
+            } else {
+                throw new ServerExistsException(String.Format("Server with name \"{0}\" already exists", server.name));
+            }
         }
 
-        public void RemoveServer(string host) {
+        public bool ServerIsExists(string serverName) {
             foreach (Server _server in this.servers) {
-                if (_server.host == host) {
+                if (_server.name == serverName) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void RemoveServer(string name) {
+            foreach (Server _server in this.servers) {
+                if (_server.name == name) {
                     this.servers.Remove(_server);
                     break;
                 }
@@ -97,5 +110,9 @@ namespace RemoteServerWatcher {
             return _hosts.ToArray();
         }
         #endregion
+    }
+
+    public class ServerExistsException : Exception {
+        public ServerExistsException(string message) : base(message) { }
     }
 }

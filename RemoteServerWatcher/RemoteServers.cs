@@ -61,19 +61,6 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonSaveServer_Click(object sender, EventArgs e) {
-            if (textBoxName.Text.Length == 0) {
-                textBoxName.Text = textBoxHostName.Text;
-            }
-
-            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
-
-            if (Array.IndexOf(mainForm.storage.GetHosts(), textBoxName.Text) == -1) {
-                mainForm.storage.AddServer(new Server(textBoxName.Text, textBoxHostName.Text, textBoxLogin.Text, textBoxPassword.Text));
-                UpdateServersInListBox();
-                ClearFields();
-            } else {
-                MessageBox.Show("Server with same name already saved\nChange server name");
-            }
         }
 
         private void listBoxServers_SelectedIndexChanged(object sender, EventArgs e) {
@@ -82,6 +69,26 @@ namespace RemoteServerWatcher {
             textBoxHostName.Text = _selectedServer.host;
             textBoxLogin.Text = _selectedServer.userLogin;
             textBoxPassword.Text = _selectedServer.userPassword;
+            checkBoxServerEnabled.Checked = _selectedServer.enabled;
+        }
+
+        private void buttonAddNewServer_Click(object sender, EventArgs e) {
+            if (textBoxName.Text.Length == 0) {
+                textBoxName.Text = textBoxHostName.Text;
+            }
+
+            MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
+
+            if (!mainForm.storage.ServerIsExists(textBoxName.Text)) {
+                mainForm.storage.AddServer(new Server(textBoxName.Text, textBoxHostName.Text, textBoxLogin.Text, textBoxPassword.Text));
+                UpdateServersInListBox();
+                ClearFields();
+            } else {
+                MessageBox.Show("Server with same name already saved\nChange server name");
+            }
+        }
+
+        private void buttonServerRemove_Click(object sender, EventArgs e) {
         }
     }
 }

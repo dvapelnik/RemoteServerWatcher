@@ -18,7 +18,7 @@ namespace RemoteServerWatcher {
 
         public MainForm() {
             this.Name = "MainForm";
-            this.scope = DataProtectionScope.CurrentUser;
+            this.scope = DataProtectionScope.LocalMachine;
             this.cryptor = new Cryptor(this.scope);
             this.storage = new Storage();
             if (!File.Exists(this.dataStorageFileNameOptions)) {

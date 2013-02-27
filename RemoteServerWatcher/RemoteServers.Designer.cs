@@ -38,13 +38,15 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.buttonSaveServer = new System.Windows.Forms.Button();
             this.listBoxServers = new System.Windows.Forms.ListBox();
+            this.buttonAddNewServer = new System.Windows.Forms.Button();
+            this.buttonServerRemove = new System.Windows.Forms.Button();
             this.groupBoxMainGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(397, 226);
+            this.buttonCancel.Location = new System.Drawing.Point(391, 226);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 9;
@@ -54,7 +56,7 @@
             // 
             // buttonOk
             // 
-            this.buttonOk.Location = new System.Drawing.Point(316, 226);
+            this.buttonOk.Location = new System.Drawing.Point(310, 226);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 8;
@@ -64,6 +66,8 @@
             // 
             // groupBoxMainGroup
             // 
+            this.groupBoxMainGroup.Controls.Add(this.buttonServerRemove);
+            this.groupBoxMainGroup.Controls.Add(this.buttonAddNewServer);
             this.groupBoxMainGroup.Controls.Add(this.labelHostName);
             this.groupBoxMainGroup.Controls.Add(this.textBoxHostName);
             this.groupBoxMainGroup.Controls.Add(this.checkBoxServerEnabled);
@@ -176,7 +180,7 @@
             // 
             // buttonSaveServer
             // 
-            this.buttonSaveServer.Location = new System.Drawing.Point(378, 173);
+            this.buttonSaveServer.Location = new System.Drawing.Point(215, 178);
             this.buttonSaveServer.Name = "buttonSaveServer";
             this.buttonSaveServer.Size = new System.Drawing.Size(75, 23);
             this.buttonSaveServer.TabIndex = 7;
@@ -192,6 +196,26 @@
             this.listBoxServers.Size = new System.Drawing.Size(203, 173);
             this.listBoxServers.TabIndex = 0;
             this.listBoxServers.SelectedIndexChanged += new System.EventHandler(this.listBoxServers_SelectedIndexChanged);
+            // 
+            // buttonAddNewServer
+            // 
+            this.buttonAddNewServer.Location = new System.Drawing.Point(297, 178);
+            this.buttonAddNewServer.Name = "buttonAddNewServer";
+            this.buttonAddNewServer.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddNewServer.TabIndex = 12;
+            this.buttonAddNewServer.Text = "Add new";
+            this.buttonAddNewServer.UseVisualStyleBackColor = true;
+            this.buttonAddNewServer.Click += new System.EventHandler(this.buttonAddNewServer_Click);
+            // 
+            // buttonServerRemove
+            // 
+            this.buttonServerRemove.Location = new System.Drawing.Point(378, 178);
+            this.buttonServerRemove.Name = "buttonServerRemove";
+            this.buttonServerRemove.Size = new System.Drawing.Size(75, 23);
+            this.buttonServerRemove.TabIndex = 13;
+            this.buttonServerRemove.Text = "Remove";
+            this.buttonServerRemove.UseVisualStyleBackColor = true;
+            this.buttonServerRemove.Click += new System.EventHandler(this.buttonServerRemove_Click);
             // 
             // RemoteServers
             // 
@@ -230,5 +254,7 @@
         private System.Windows.Forms.Button buttonTestConnection;
         private System.Windows.Forms.TextBox textBoxHostName;
         private System.Windows.Forms.Label labelHostName;
+        private System.Windows.Forms.Button buttonAddNewServer;
+        private System.Windows.Forms.Button buttonServerRemove;
     }
 }
