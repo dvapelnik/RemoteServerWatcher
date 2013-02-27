@@ -109,6 +109,18 @@ namespace RemoteServerWatcher {
 
             return _hosts.ToArray();
         }
+
+        internal void UpdateServer(string serverName, Server server) {
+            for (int i = 0; i < this.servers.Count; i++) {
+                if (this.servers[i].name == serverName) {
+                    this.servers[i] = server;
+                }
+            }
+        }
+
+        internal void RemoveServer(Server _server) {
+            this.servers.Remove(_server);
+        }
         #endregion
     }
 
