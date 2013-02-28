@@ -40,14 +40,22 @@ namespace RemoteServerWatcher {
             this.LoadServers();
             InitializeComponent();
 
-            this.timer = new Timer() { Interval = Int32.Parse(this.storage.GetOption("timer-interval-seconds")) * 1000 };
+            this.timer = new Timer() { Interval = Int32.Parse(this.storage.GetOption("timer-interval-seconds"))};
             this.timer.Tick += timer_Tick;
             if (this.storage.GetOption("start-timer-on-load") == "1") {
                 this.timer.Start();
             }
+
+            SetStopStartButtonStatus();
+        }
+
+        private void SetStopStartButtonStatus() {
+            buttonStart.Enabled = !timer.Enabled;
+            buttonStop.Enabled = timer.Enabled;
         }
 
         void timer_Tick(object sender, EventArgs e) {
+            labelTime.Text = DateTime.Now.ToString();
             foreach (Server _server in this.storage.servers) {
                 if (!_server.enabled) continue;
                 if (_server.sshClient == null) _server.InitSshClient();
@@ -82,8 +90,8 @@ namespace RemoteServerWatcher {
 
         private void GenerateDefaultOptions() {
             this.storage.AddOption("salt", "some-salt-for-test");
-            this.storage.AddOption("timer-interval-seconds", "5");
-            this.storage.AddOption("start-timer-on-load", "1");
+            this.storage.AddOption("timer-interval-seconds", "5000");
+            this.storage.AddOption("start-timer-on-load", "0");
         }
 
         private void GenerateDefaultServers() {
@@ -184,6 +192,20 @@ namespace RemoteServerWatcher {
 
             this.SaveOptionsToFile();
             this.SaveServersToFile();
+        }
+
+        private void preToolStripMenuItem_Click(object sender, EventArgs e) {
+            (new OptionsForm()).ShowDialog();
+        }
+
+        private void buttonStart_Click(object sender, EventArgs e) {
+            timer.Start();
+            SetStopStartButtonStatus();
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e) {
+            timer.Stop();
+            SetStopStartButtonStatus();
         }
         #endregion
     }

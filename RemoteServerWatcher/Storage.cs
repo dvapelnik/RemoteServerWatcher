@@ -36,6 +36,18 @@ namespace RemoteServerWatcher {
             this.options.Add(new Option(key, value));
         }
 
+        internal bool UpdateOption(string key, string value) {
+            for (int i = 0; i < this.options.Count; i++) {
+                if (this.options[i].key == key) {
+                    if (this.options[i].value != value) {
+                        this.options[i] = new Option(key, value);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void RemoveOption(string key) {
             foreach (Option _option in this.options) {
                 if (_option.key == key) {

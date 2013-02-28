@@ -222,11 +222,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(484, 261);
+            this.ClientSize = new System.Drawing.Size(484, 262);
             this.Controls.Add(this.groupBoxMainGroup);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonCancel);
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(500, 300);
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "RemoteServers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

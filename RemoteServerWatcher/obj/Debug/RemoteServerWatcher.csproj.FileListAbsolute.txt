@@ -20,3 +20,4 @@ D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\Remote
 D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\RemoteServerWatcher.exe
 D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\RemoteServerWatcher.pdb
 D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Debug\Renci.SshNet.dll
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Debug\RemoteServerWatcher.OptionsForm.resources
