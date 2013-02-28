@@ -60,6 +60,9 @@ namespace RemoteServerWatcher {
                 if (!_server.enabled) continue;
                 if (_server.sshClient == null) _server.InitSshClient();
                 UptimeResult uptimeResult = _server.GetUptimeResult();
+                if (_server.updateResults == null) {
+                    _server.updateResults = new List<UptimeResult>();
+                }
                 _server.updateResults.Add(uptimeResult);
                 richTextBoxLog.Text = uptimeResult.ToString() + "\n" + richTextBoxLog.Text;
             }
