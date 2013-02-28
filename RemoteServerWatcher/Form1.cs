@@ -59,7 +59,9 @@ namespace RemoteServerWatcher {
             foreach (Server _server in this.storage.servers) {
                 if (!_server.enabled) continue;
                 if (_server.sshClient == null) _server.InitSshClient();
-                richTextBoxLog.Text = _server.GetUptimeResult().ToString() + "\n" + richTextBoxLog.Text;
+                UptimeResult uptimeResult = _server.GetUptimeResult();
+                _server.updateResults.Add(uptimeResult);
+                richTextBoxLog.Text = uptimeResult.ToString() + "\n" + richTextBoxLog.Text;
             }
         }
 

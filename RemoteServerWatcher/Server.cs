@@ -12,6 +12,8 @@ namespace RemoteServerWatcher {
 
         private static List<Server> servers;
 
+        internal List<UptimeResult> updateResults;
+
         internal Renci.SshNet.SshClient sshClient;
 
         public string getHashedObject() {
