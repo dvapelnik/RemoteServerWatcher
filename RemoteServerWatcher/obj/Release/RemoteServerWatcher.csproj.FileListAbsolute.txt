@@ -1,0 +1,11 @@
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Release\RemoteServerWatcher.exe.config
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Release\RemoteServerWatcher.exe
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Release\RemoteServerWatcher.pdb
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\bin\Release\Renci.SshNet.dll
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.MainForm.resources
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.OptionsForm.resources
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.Properties.Resources.resources
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.RemoteServers.resources
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.csproj.GenerateResource.Cache
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.exe
+D:\dvapelnik\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.pdb
