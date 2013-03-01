@@ -39,6 +39,7 @@
             this.textBoxCommand = new System.Windows.Forms.TextBox();
             this.buttonSendCommand = new System.Windows.Forms.Button();
             this.comboBoxServers = new System.Windows.Forms.ComboBox();
+            this.backgroundWorkerForServers = new System.ComponentModel.BackgroundWorker();
             this.menuStripMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
             this.SuspendLayout();
@@ -103,6 +104,7 @@
             this.richTextBoxLog.Size = new System.Drawing.Size(760, 251);
             this.richTextBoxLog.TabIndex = 7;
             this.richTextBoxLog.Text = "";
+            this.richTextBoxLog.TextChanged += new System.EventHandler(this.richTextBoxLog_TextChanged);
             // 
             // buttonStop
             // 
@@ -195,6 +197,10 @@
             this.comboBoxServers.Size = new System.Drawing.Size(121, 21);
             this.comboBoxServers.TabIndex = 1;
             // 
+            // backgroundWorkerForServers
+            // 
+            this.backgroundWorkerForServers.WorkerSupportsCancellation = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +247,7 @@
         private System.Windows.Forms.TextBox textBoxCommand;
         private System.Windows.Forms.Button buttonSendCommand;
         private System.Windows.Forms.ComboBox comboBoxServers;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerForServers;
 
     }
 }
