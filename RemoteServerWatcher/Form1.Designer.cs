@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuStripMainMenu = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,19 +39,19 @@
             this.textBoxCommand = new System.Windows.Forms.TextBox();
             this.buttonSendCommand = new System.Windows.Forms.Button();
             this.comboBoxServers = new System.Windows.Forms.ComboBox();
-            this.menuStrip1.SuspendLayout();
+            this.menuStripMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // menuStripMainMenu
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStripMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fIleToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(782, 24);
-            this.menuStrip1.TabIndex = 6;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStripMainMenu.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMainMenu.Name = "menuStripMainMenu";
+            this.menuStripMainMenu.Size = new System.Drawing.Size(782, 24);
+            this.menuStripMainMenu.TabIndex = 6;
+            this.menuStripMainMenu.Text = "menuStrip1";
             // 
             // fIleToolStripMenuItem
             // 
@@ -209,15 +209,15 @@
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.richTextBoxLog);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.menuStripMainMenu);
+            this.MainMenuStrip = this.menuStripMainMenu;
             this.MinimumSize = new System.Drawing.Size(16, 600);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Remote server watcher";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStripMainMenu.ResumeLayout(false);
+            this.menuStripMainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -226,7 +226,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStripMainMenu;
         private System.Windows.Forms.ToolStripMenuItem fIleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteServersToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;

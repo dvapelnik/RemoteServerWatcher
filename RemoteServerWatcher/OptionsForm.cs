@@ -28,7 +28,6 @@ namespace RemoteServerWatcher {
             if (mainForm.storage.UpdateOption(MainForm.TimerInterval, (Int32.Parse(comboBoxTimerInterval.Text) * 1000).ToString())) {
                 mainForm.timer.Interval = Int32.Parse(comboBoxTimerInterval.Text) * 1000;
             }
-            mainForm.UpdateServesComboBox();
             this.Close();
         }
 

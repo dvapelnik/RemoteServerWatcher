@@ -30,6 +30,7 @@ namespace RemoteServerWatcher {
 
         private void buttonOk_Click(object sender, EventArgs e) {
             mainForm.SaveServersToFile();
+            mainForm.UpdateServesComboBox();
             this.Hide();
         }
 
