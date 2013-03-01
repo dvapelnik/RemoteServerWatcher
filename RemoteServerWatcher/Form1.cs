@@ -82,6 +82,12 @@ namespace RemoteServerWatcher {
         }
 
         private void TimerTickMethod() {
+            if (storage.servers.Count == 0) {
+                timer.Stop();
+                SetStopStartButtonStatus();
+                MessageBox.Show("List of your servers is empty\n");
+                return;
+            }
             labelTime.Text = DateTime.Now.ToString();
             foreach (Server _server in this.storage.servers) {
                 if (!_server.enabled) continue;
