@@ -10,6 +10,12 @@ using System.Linq;
 
 namespace RemoteServerWatcher {
     public partial class MainForm : Form {
+        #region Constatnts
+        public const string TimerInterval = "timer-interval-seconds";
+        public const string StartTimerOnLoad = "start-timer-on-load";
+        public const string ChartRange = "chart-range";
+        #endregion
+
         private string dataStorageFileNameOptions = "settings.xml";
         private string dataStorageFileNameServers = "servers.xml";
 
@@ -57,6 +63,10 @@ namespace RemoteServerWatcher {
             }
 
             chartServers.ChartAreas["ChartAreaServersLA"].Axes[1].Maximum = 0;
+
+            UpdateServesComboBox();
+
+            textBoxCommand.Focus();
         }
 
         private void SetStopStartButtonStatus() {
@@ -64,7 +74,14 @@ namespace RemoteServerWatcher {
             buttonStop.Enabled = timer.Enabled;
         }
 
-        void timer_Tick(object sender, EventArgs e) {
+        internal void UpdateServesComboBox() {
+            comboBoxServers.Items.Clear();
+            foreach (Server _server in storage.servers) {
+                comboBoxServers.Items.Add(_server);
+            }
+        }
+
+        private void TimerTickMethod() {
             labelTime.Text = DateTime.Now.ToString();
             foreach (Server _server in this.storage.servers) {
                 if (!_server.enabled) continue;
@@ -74,7 +91,6 @@ namespace RemoteServerWatcher {
                     _server.updateResults = new List<UptimeResult>();
                 }
                 _server.updateResults.Add(uptimeResult);
-                richTextBoxLog.Text = uptimeResult.ToString() + "\n" + richTextBoxLog.Text;
             }
 
             chartServers.Series.Clear();
@@ -85,7 +101,8 @@ namespace RemoteServerWatcher {
                 Series _series = new Series(_server.name);
                 _series.ChartType = SeriesChartType.Spline;
                 _series.IsXValueIndexed = false;
-                List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption("chart-range")));
+                _series.BorderWidth = 2;
+                List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
                 epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
                 epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
                 loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
@@ -130,10 +147,9 @@ namespace RemoteServerWatcher {
         }
 
         private void GenerateDefaultOptions() {
-            this.storage.AddOption("salt", "some-salt-for-test");
-            this.storage.AddOption("timer-interval-seconds", "5000");
-            this.storage.AddOption("start-timer-on-load", "0");
-            this.storage.AddOption("chart-range", "20");
+            this.storage.AddOption(TimerInterval, "5000");
+            this.storage.AddOption(StartTimerOnLoad, "0");
+            this.storage.AddOption(ChartRange, "20");
         }
 
         private void GenerateDefaultServers() {
@@ -216,6 +232,14 @@ namespace RemoteServerWatcher {
         #endregion
 
         #region Form events
+        private void timer_Tick(object sender, EventArgs e) {
+            TimerTickMethod();
+        }
+
+        private void buttonManualUpdate_Click(object sender, EventArgs e) {
+            TimerTickMethod();
+        }
+
         private void remoteServersToolStripMenuItem_Click(object sender, EventArgs e) {
             (new RemoteServers()).ShowDialog();
         }
@@ -250,5 +274,24 @@ namespace RemoteServerWatcher {
             SetStopStartButtonStatus();
         }
         #endregion
+
+        private void buttonSendCommand_Click(object sender, EventArgs e) {
+            Server _selectedServer = comboBoxServers.SelectedItem as Server;
+            if (_selectedServer == null) {
+                MessageBox.Show("Select server from list or add new server if server list is empty");
+            } else {
+                richTextBoxLog.Text += _selectedServer.host + ":\n" + _selectedServer.GetCommandResult(textBoxCommand.Text.Trim());
+                textBoxCommand.Clear();
+                textBoxCommand.Focus();
+                richTextBoxLog.SelectionStart = richTextBoxLog.Text.Length;
+                richTextBoxLog.ScrollToCaret();
+            }
+        }
+
+        private void textBoxCommand_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == (char)13) {
+                buttonSendCommand_Click(null, null);
+            }
+        }
     }
 }

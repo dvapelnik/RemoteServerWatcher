@@ -15,8 +15,8 @@ namespace RemoteServerWatcher {
             InitializeComponent();
             mainForm = (MainForm)Application.OpenForms["MainForm"];
 
-            checkBoxMonitorAutostart.Checked = mainForm.storage.GetOption("start-timer-on-load") == "1";
-            comboBoxTimerInterval.Text = (Int32.Parse(mainForm.storage.GetOption("timer-interval-seconds")) / 1000).ToString();
+            checkBoxMonitorAutostart.Checked = mainForm.storage.GetOption(MainForm.StartTimerOnLoad) == "1";
+            comboBoxTimerInterval.Text = (Int32.Parse(mainForm.storage.GetOption(MainForm.TimerInterval)) / 1000).ToString();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e) {
@@ -24,10 +24,11 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonOk_Click(object sender, EventArgs e) {
-            mainForm.storage.UpdateOption("start-timer-on-load", checkBoxMonitorAutostart.Checked ? "1" : "0");
-            if (mainForm.storage.UpdateOption("timer-interval-seconds", (Int32.Parse(comboBoxTimerInterval.Text) * 1000).ToString())) {
+            mainForm.storage.UpdateOption(MainForm.StartTimerOnLoad, checkBoxMonitorAutostart.Checked ? "1" : "0");
+            if (mainForm.storage.UpdateOption(MainForm.TimerInterval, (Int32.Parse(comboBoxTimerInterval.Text) * 1000).ToString())) {
                 mainForm.timer.Interval = Int32.Parse(comboBoxTimerInterval.Text) * 1000;
             }
+            mainForm.UpdateServesComboBox();
             this.Close();
         }
 

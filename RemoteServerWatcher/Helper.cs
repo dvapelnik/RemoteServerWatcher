@@ -8,7 +8,7 @@ namespace RemoteServerWatcher {
         internal static double DateTimeToUnixTimeStamp(DateTime dateTime) {
             DateTime unixEpoche = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
             TimeSpan delta = dateTime - unixEpoche;
-            return Math.Round(delta.TotalSeconds);
+            return delta.TotalSeconds;
         }
 
         internal static T[] GetLastItems<T>(T[] array, int count) {
