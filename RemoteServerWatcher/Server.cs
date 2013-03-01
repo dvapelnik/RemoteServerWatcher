@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace RemoteServerWatcher {
     public class Server {
@@ -9,8 +12,6 @@ namespace RemoteServerWatcher {
         public string userLogin = String.Empty;
         public string userPassword = String.Empty;
         public bool enabled = false;
-
-        private static List<Server> servers;
 
         internal List<UptimeResult> updateResults;
 
@@ -69,6 +70,14 @@ namespace RemoteServerWatcher {
 
         public override string ToString() {
             return this.name;
+        }
+
+        internal List<DataPoint> GetLastPoints(int count) {
+            List<DataPoint> points = new List<DataPoint>();
+            foreach (UptimeResult _result in Helper.GetLastItems(updateResults, count)) {
+                points.Add(new DataPoint(Helper.DateTimeToUnixTimeStamp(_result.currentDateTime), _result.loadAverage[0]));
+            }
+            return points;
         }
     }
 

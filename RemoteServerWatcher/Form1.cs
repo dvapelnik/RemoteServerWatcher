@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Linq;
 
 namespace RemoteServerWatcher {
     public partial class MainForm : Form {
@@ -24,7 +25,6 @@ namespace RemoteServerWatcher {
             this.cryptor = new Cryptor(this.scope);
             this.storage = new Storage();
 
-
             #region Servers and options file
             if (!File.Exists(this.dataStorageFileNameOptions)) {
                 this.GenerateDefaultOptions();
@@ -40,13 +40,23 @@ namespace RemoteServerWatcher {
             this.LoadServers();
             InitializeComponent();
 
-            this.timer = new Timer() { Interval = Int32.Parse(this.storage.GetOption("timer-interval-seconds"))};
+            this.timer = new Timer() { Interval = Int32.Parse(this.storage.GetOption("timer-interval-seconds")) };
             this.timer.Tick += timer_Tick;
             if (this.storage.GetOption("start-timer-on-load") == "1") {
                 this.timer.Start();
             }
 
             SetStopStartButtonStatus();
+
+            foreach (Server _server in storage.servers) {
+                if (_server.enabled) {
+                    Series _series = new Series(_server.name);
+                    _series.ChartType = SeriesChartType.Spline;
+                    chartServers.Series.Add(_series);
+                }
+            }
+
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[1].Maximum = 0;
         }
 
         private void SetStopStartButtonStatus() {
@@ -65,6 +75,32 @@ namespace RemoteServerWatcher {
                 }
                 _server.updateResults.Add(uptimeResult);
                 richTextBoxLog.Text = uptimeResult.ToString() + "\n" + richTextBoxLog.Text;
+            }
+
+            chartServers.Series.Clear();
+            List<double> loadAvereageMaximums = new List<double>();
+            List<double> epocheMaximums = new List<double>();
+            List<double> epocheMinimums = new List<double>();
+            foreach (Server _server in storage.servers) {
+                Series _series = new Series(_server.name);
+                _series.ChartType = SeriesChartType.Spline;
+                _series.IsXValueIndexed = false;
+                List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption("chart-range")));
+                epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
+                epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
+                loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
+                foreach (DataPoint _point in _points) {
+                    _series.Points.Add(_point);
+                }
+                chartServers.Series.Add(_series);
+            }
+
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Minimum = (double)(from double _data in epocheMinimums select _data).Min();
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Maximum = (double)(from double _data in epocheMaximums select _data).Max();
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[1].Maximum = (double)(from double _data in loadAvereageMaximums select _data).Max() + 1;
+
+            if (chartServers.Legends.FindByName("Servers") == null) {
+                chartServers.Legends.Add(new Legend("Servers") { Title = "Servers" });
             }
         }
 
@@ -97,6 +133,7 @@ namespace RemoteServerWatcher {
             this.storage.AddOption("salt", "some-salt-for-test");
             this.storage.AddOption("timer-interval-seconds", "5000");
             this.storage.AddOption("start-timer-on-load", "0");
+            this.storage.AddOption("chart-range", "20");
         }
 
         private void GenerateDefaultServers() {

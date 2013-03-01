@@ -6,24 +6,29 @@ using System.Threading.Tasks;
 
 namespace RemoteServerWatcher {
     internal class UptimeResult {
-        DateTime currentDateTime;
-        internal string time;
-        internal int uptimeDays;
-        internal int userCount;
+        internal DateTime currentDateTime;
+        internal string time = String.Empty;
+        internal int uptimeDays = 0;
+        internal int userCount = 0;
         internal double[] loadAverage;
-        internal string hostName;
+        internal string hostName = String.Empty;
 
         internal UptimeResult(string hostName, string uptimeResult) {
             string[] splitted = uptimeResult.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            this.hostName = hostName;
+
             this.currentDateTime = DateTime.Now;
-            this.time = splitted[0];
-            this.uptimeDays = Int32.Parse(splitted[2]);
-            this.userCount = Int32.Parse(splitted[5]);
+
+            this.hostName = hostName;
+            //this.time = splitted[0];
+            //this.uptimeDays = Int32.Parse(splitted[2]);
+            //this.userCount = Int32.Parse(splitted[5]);
+
+            string[] loadAverage = Helper.GetLastItems(splitted, 3);
+
             this.loadAverage = new double[]{
-                Double.Parse(splitted[9].Replace('.', ',').Trim(", \n".ToCharArray())),
-                Double.Parse(splitted[10].Replace('.', ',').Trim(", \n".ToCharArray())),
-                Double.Parse(splitted[11].Replace('.', ',').Trim(", \n".ToCharArray()))
+                Double.Parse(loadAverage[0].Replace('.', ',').Trim(", \n".ToCharArray())),
+                Double.Parse(loadAverage[1].Replace('.', ',').Trim(", \n".ToCharArray())),
+                Double.Parse(loadAverage[2].Replace('.', ',').Trim(", \n".ToCharArray()))
             };
         }
 
