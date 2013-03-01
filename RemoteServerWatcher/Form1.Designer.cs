@@ -23,7 +23,8 @@
         /// содержимое данного метода при помощи редактора кода.
         /// </summary>
         private void InitializeComponent() {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.menuStripMainMenu = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,8 +41,12 @@
             this.buttonSendCommand = new System.Windows.Forms.Button();
             this.comboBoxServers = new System.Windows.Forms.ComboBox();
             this.backgroundWorkerForServers = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorkerForCommand = new System.ComponentModel.BackgroundWorker();
+            this.contextMenuStripRichTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
+            this.contextMenuStripRichTextBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainMenu
@@ -97,6 +102,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.richTextBoxLog.ContextMenuStrip = this.contextMenuStripRichTextBox;
             this.richTextBoxLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTextBoxLog.Location = new System.Drawing.Point(12, 271);
             this.richTextBoxLog.Name = "richTextBoxLog";
@@ -143,13 +149,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chartServers.BorderlineColor = System.Drawing.Color.DimGray;
             this.chartServers.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX2.MajorGrid.Enabled = false;
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.AxisY2.MajorGrid.Enabled = false;
-            chartArea1.Name = "ChartAreaServersLA";
-            this.chartServers.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX2.MajorGrid.Enabled = false;
+            chartArea2.AxisY.MajorGrid.Enabled = false;
+            chartArea2.AxisY2.MajorGrid.Enabled = false;
+            chartArea2.Name = "ChartAreaServersLA";
+            this.chartServers.ChartAreas.Add(chartArea2);
             this.chartServers.Location = new System.Drawing.Point(12, 56);
             this.chartServers.Name = "chartServers";
             this.chartServers.Size = new System.Drawing.Size(760, 200);
@@ -201,6 +207,20 @@
             // 
             this.backgroundWorkerForServers.WorkerSupportsCancellation = true;
             // 
+            // contextMenuStripRichTextBox
+            // 
+            this.contextMenuStripRichTextBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearToolStripMenuItem});
+            this.contextMenuStripRichTextBox.Name = "contextMenuStripRichTextBox";
+            this.contextMenuStripRichTextBox.Size = new System.Drawing.Size(102, 26);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,6 +245,7 @@
             this.menuStripMainMenu.ResumeLayout(false);
             this.menuStripMainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).EndInit();
+            this.contextMenuStripRichTextBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,6 +269,9 @@
         private System.Windows.Forms.Button buttonSendCommand;
         private System.Windows.Forms.ComboBox comboBoxServers;
         private System.ComponentModel.BackgroundWorker backgroundWorkerForServers;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerForCommand;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripRichTextBox;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
 
     }
 }

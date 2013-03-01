@@ -20,3 +20,4 @@ D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteSer
 D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.Properties.Resources.resources
 D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.RemoteServers.resources
 D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.csproj.GenerateResource.Cache
+D:\Shared\Dropbox\Work\Visual Studio 2012\Projects\RemoteServerWatcher\RemoteServerWatcher\obj\Release\RemoteServerWatcher.csprojResolveAssemblyReference.cache

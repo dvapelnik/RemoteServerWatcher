@@ -70,6 +70,25 @@ namespace RemoteServerWatcher {
 
             backgroundWorkerForServers.DoWork += backgroundWorkerForServers_DoWork;
             backgroundWorkerForServers.RunWorkerCompleted += backgroundWorkerForServers_RunWorkerCompleted;
+
+            backgroundWorkerForCommand.DoWork += backgroundWorkerForCommand_DoWork;
+            backgroundWorkerForCommand.RunWorkerCompleted += backgroundWorkerForCommand_RunWorkerCompleted;
+        }
+
+        void backgroundWorkerForCommand_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+            richTextBoxLog.Text += e.Result as string;
+            textBoxCommand.Clear();
+            textBoxCommand.Focus();
+        }
+
+        void backgroundWorkerForCommand_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
+            Dictionary<string, object> _argument = e.Argument as Dictionary<string, object>;
+            Server _server = _argument["server"] as Server;
+            string _command = _argument["command"] as string;
+
+            string _result = _server.GetCommandResult(_command);
+
+            e.Result = String.Format("{0}:\n{1}\n", _server.host, _result) as object;
         }
 
         void backgroundWorkerForServers_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
@@ -307,9 +326,12 @@ namespace RemoteServerWatcher {
             if (_selectedServer == null) {
                 MessageBox.Show("Select server from list or add new server if server list is empty");
             } else {
-                richTextBoxLog.Text += _selectedServer.host + ":\n" + _selectedServer.GetCommandResult(textBoxCommand.Text.Trim());
-                textBoxCommand.Clear();
-                textBoxCommand.Focus();
+
+                Dictionary<string, object> _argument = new Dictionary<string, object>();
+                _argument.Add("server", (object)_selectedServer);
+                _argument.Add("command", (object)textBoxCommand.Text.Trim());
+
+                backgroundWorkerForCommand.RunWorkerAsync(_argument as object);
             }
         }
 
@@ -324,5 +346,9 @@ namespace RemoteServerWatcher {
             richTextBoxLog.ScrollToCaret();
         }
         #endregion
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e) {
+            richTextBoxLog.Clear();
+        }
     }
 }
