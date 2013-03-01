@@ -69,10 +69,15 @@ namespace RemoteServerWatcher {
             textBoxCommand.Focus();
 
             backgroundWorkerForServers.DoWork += backgroundWorkerForServers_DoWork;
+            backgroundWorkerForServers.RunWorkerCompleted += backgroundWorkerForServers_RunWorkerCompleted;
+        }
+
+        void backgroundWorkerForServers_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+            UpdateChart();
         }
 
         void backgroundWorkerForServers_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
-            TimerTickMethod();
+            CollectNewUptimeData();
         }
 
         private void SetStopStartButtonStatus() {
@@ -87,16 +92,7 @@ namespace RemoteServerWatcher {
             }
         }
 
-        private void TimerTickMethod() {
-            if (storage.servers.Count == 0) {
-                timer.Stop();
-                SetStopStartButtonStatus();
-                MessageBox.Show("List of your servers is empty\n");
-                return;
-            }
-
-            this.Invoke(new MethodInvoker(delegate { labelTime.Text = DateTime.Now.ToString(); }));
-            
+        private void CollectNewUptimeData() {
             foreach (Server _server in this.storage.servers) {
                 if (!_server.enabled) continue;
                 if (_server.sshClient == null) _server.InitSshClient();
@@ -106,14 +102,16 @@ namespace RemoteServerWatcher {
                 }
                 _server.updateResults.Add(uptimeResult);
             }
+        }
 
-            this.Invoke(new MethodInvoker(delegate { chartServers.Series.Clear(); }));
+        private void UpdateChart() {
+            chartServers.Series.Clear();
 
             List<double> loadAvereageMaximums = new List<double>();
             List<double> epocheMaximums = new List<double>();
             List<double> epocheMinimums = new List<double>();
 
-            this.Invoke(new MethodInvoker(delegate { chartServers.Series.Clear(); }));
+            chartServers.Series.Clear();
 
             foreach (Server _server in storage.servers) {
                 Series _series = new Series(_server.name);
@@ -128,18 +126,16 @@ namespace RemoteServerWatcher {
                     _series.Points.Add(_point);
                 }
 
-                this.Invoke(new MethodInvoker(delegate { chartServers.Series.Add(_series); }));
+                chartServers.Series.Add(_series);
             }
 
-            this.Invoke(new MethodInvoker(delegate {
-                chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Minimum = (double)(from double _data in epocheMinimums select _data).Min();
-                chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Maximum = (double)(from double _data in epocheMaximums select _data).Max();
-                chartServers.ChartAreas["ChartAreaServersLA"].Axes[1].Maximum = (double)(from double _data in loadAvereageMaximums select _data).Max() + 1;
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Minimum = (double)(from double _data in epocheMinimums select _data).Min();
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Maximum = (double)(from double _data in epocheMaximums select _data).Max();
+            chartServers.ChartAreas["ChartAreaServersLA"].Axes[1].Maximum = (double)(from double _data in loadAvereageMaximums select _data).Max() + 1;
 
-                if (chartServers.Legends.FindByName("Servers") == null) {
-                    chartServers.Legends.Add(new Legend("Servers") { Title = "Servers" });
-                }
-            }));
+            if (chartServers.Legends.FindByName("Servers") == null) {
+                chartServers.Legends.Add(new Legend("Servers") { Title = "Servers" });
+            }
         }
 
         #region Options and servers
@@ -254,6 +250,13 @@ namespace RemoteServerWatcher {
 
         #region Form events
         private void timer_Tick(object sender, EventArgs e) {
+            if (storage.servers.Count == 0) {
+                timer.Stop();
+                SetStopStartButtonStatus();
+                MessageBox.Show("List of your servers is empty\n");
+                return;
+            }
+
             if (!backgroundWorkerForServers.IsBusy) {
                 backgroundWorkerForServers.RunWorkerAsync();
             }
