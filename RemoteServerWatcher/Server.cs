@@ -13,6 +13,8 @@ namespace RemoteServerWatcher {
         public string userPassword = String.Empty;
         public bool enabled = false;
 
+        internal bool isAvailable = false;
+
         internal List<UptimeResult> updateResults;
 
         internal Renci.SshNet.SshClient sshClient;

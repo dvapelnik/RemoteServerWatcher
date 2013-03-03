@@ -21,9 +21,9 @@ namespace RemoteServerWatcher {
             return list.Skip(Math.Max(0, list.Count - count)).Take(count).ToList();
         }
 
-        internal static bool ServerIsAvailable(string serverName) {
+        internal static bool ServerIsAvailable(string serverName, int ttl = 1000) {
             Ping ping = new Ping();
-            PingReply replay = ping.Send(serverName, 100);
+            PingReply replay = ping.Send(serverName, ttl);
             return replay.Status == IPStatus.Success;
         }
     }

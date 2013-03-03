@@ -45,7 +45,7 @@
             this.backgroundWorkerForServers = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorkerForCommand = new System.ComponentModel.BackgroundWorker();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelBackgroundWorkerStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuStripRichTextBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
@@ -227,19 +227,18 @@
             // statusStripMain
             // 
             this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelBackgroundWorkerStatus});
+            this.toolStripStatusLabelTime});
             this.statusStripMain.Location = new System.Drawing.Point(0, 540);
             this.statusStripMain.Name = "statusStripMain";
             this.statusStripMain.Size = new System.Drawing.Size(782, 22);
             this.statusStripMain.TabIndex = 8;
             this.statusStripMain.Text = "statusStrip1";
             // 
-            // toolStripStatusLabelBackgroundWorkerStatus
+            // toolStripStatusLabelTime
             // 
-            this.toolStripStatusLabelBackgroundWorkerStatus.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripStatusLabelBackgroundWorkerStatus.Name = "toolStripStatusLabelBackgroundWorkerStatus";
-            this.toolStripStatusLabelBackgroundWorkerStatus.Size = new System.Drawing.Size(76, 17);
-            this.toolStripStatusLabelBackgroundWorkerStatus.Text = "BGW: Servers";
+            this.toolStripStatusLabelTime.Name = "toolStripStatusLabelTime";
+            this.toolStripStatusLabelTime.Size = new System.Drawing.Size(19, 17);
+            this.toolStripStatusLabelTime.Text = "    ";
             // 
             // MainForm
             // 
@@ -296,7 +295,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStripRichTextBox;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStripMain;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBackgroundWorkerStatus;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelTime;
 
     }
 }

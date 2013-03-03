@@ -74,8 +74,6 @@ namespace RemoteServerWatcher {
 
             backgroundWorkerForCommand.DoWork += backgroundWorkerForCommand_DoWork;
             backgroundWorkerForCommand.RunWorkerCompleted += backgroundWorkerForCommand_RunWorkerCompleted;
-
-            toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Green;
         }
 
         void backgroundWorkerForCommand_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
@@ -95,12 +93,12 @@ namespace RemoteServerWatcher {
         }
 
         void backgroundWorkerForServers_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
-            this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Green; }));
             UpdateChart();
+            //this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Green; }));
         }
 
         void backgroundWorkerForServers_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
-            this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Red; }));
+            //this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Red; }));
             CollectNewUptimeData();
         }
 
@@ -118,13 +116,16 @@ namespace RemoteServerWatcher {
 
         private void CollectNewUptimeData() {
             foreach (Server _server in this.storage.servers) {
-                if (!_server.enabled) continue;
-                if (_server.sshClient == null) _server.InitSshClient();
-                UptimeResult uptimeResult = _server.GetUptimeResult();
-                if (_server.updateResults == null) {
-                    _server.updateResults = new List<UptimeResult>();
+                _server.isAvailable = Helper.ServerIsAvailable(_server.host);
+                if (_server.enabled) {
+                    if (!_server.isAvailable) continue;
+                    if (_server.sshClient == null) _server.InitSshClient();
+                    UptimeResult uptimeResult = _server.GetUptimeResult();
+                    if (_server.updateResults == null) {
+                        _server.updateResults = new List<UptimeResult>();
+                    }
+                    _server.updateResults.Add(uptimeResult);
                 }
-                _server.updateResults.Add(uptimeResult);
             }
         }
 
@@ -138,19 +139,22 @@ namespace RemoteServerWatcher {
             chartServers.Series.Clear();
 
             foreach (Server _server in storage.servers) {
-                Series _series = new Series(_server.name);
-                _series.ChartType = SeriesChartType.Spline;
-                _series.IsXValueIndexed = false;
-                _series.BorderWidth = 2;
-                List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
-                epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
-                epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
-                loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
-                foreach (DataPoint _point in _points) {
-                    _series.Points.Add(_point);
-                }
+                if (_server.enabled) {
+                    if (!_server.isAvailable) continue;
+                    Series _series = new Series(_server.name);
+                    _series.ChartType = SeriesChartType.Spline;
+                    _series.IsXValueIndexed = false;
+                    _series.BorderWidth = 2;
+                    List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
+                    epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
+                    epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
+                    loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
+                    foreach (DataPoint _point in _points) {
+                        _series.Points.Add(_point);
+                    }
 
-                chartServers.Series.Add(_series);
+                    chartServers.Series.Add(_series);
+                }
             }
 
             chartServers.ChartAreas["ChartAreaServersLA"].Axes[0].Minimum = (double)(from double _data in epocheMinimums select _data).Min();
@@ -274,6 +278,7 @@ namespace RemoteServerWatcher {
 
         #region Form events
         private void timer_Tick(object sender, EventArgs e) {
+            toolStripStatusLabelTime.Text = DateTime.Now.ToString();
             if (storage.servers.Count == 0) {
                 timer.Stop();
                 SetStopStartButtonStatus();
@@ -301,6 +306,8 @@ namespace RemoteServerWatcher {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            e.Cancel = backgroundWorkerForCommand.IsBusy;
+
             this.timer.Stop();
             this.timer.Dispose();
 
@@ -328,15 +335,23 @@ namespace RemoteServerWatcher {
 
         private void buttonSendCommand_Click(object sender, EventArgs e) {
             Server _selectedServer = comboBoxServers.SelectedItem as Server;
-            if (_selectedServer == null) {
+            if (textBoxCommand.Text == "") {
+                MessageBox.Show("Command is empty");
+            } else if (_selectedServer == null) {
                 MessageBox.Show("Select server from list or add new server if server list is empty");
             } else {
-
-                Dictionary<string, object> _argument = new Dictionary<string, object>();
-                _argument.Add("server", (object)_selectedServer);
-                _argument.Add("command", (object)textBoxCommand.Text.Trim());
-
-                backgroundWorkerForCommand.RunWorkerAsync(_argument as object);
+                if (!backgroundWorkerForCommand.IsBusy) {
+                    Dictionary<string, object> _argument = new Dictionary<string, object>();
+                    _argument.Add("server", (object)_selectedServer);
+                    _argument.Add("command", (object)textBoxCommand.Text.Trim());
+                    backgroundWorkerForCommand.RunWorkerAsync(_argument as object);
+                } else {
+                    if (MessageBox.Show("Console is busy\nAre you want stop?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.OK) {
+                        _selectedServer.sshClient.Dispose();
+                        backgroundWorkerForCommand.CancelAsync();
+                        backgroundWorkerForCommand.Dispose();
+                    }
+                }
             }
         }
 
