@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.menuStripMainMenu = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -32,6 +32,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.contextMenuStripRichTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.labelTime = new System.Windows.Forms.Label();
@@ -42,11 +44,12 @@
             this.comboBoxServers = new System.Windows.Forms.ComboBox();
             this.backgroundWorkerForServers = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorkerForCommand = new System.ComponentModel.BackgroundWorker();
-            this.contextMenuStripRichTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStripMain = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelBackgroundWorkerStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStripMainMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
             this.contextMenuStripRichTextBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
+            this.statusStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainMenu
@@ -107,10 +110,24 @@
             this.richTextBoxLog.Location = new System.Drawing.Point(12, 271);
             this.richTextBoxLog.Name = "richTextBoxLog";
             this.richTextBoxLog.ReadOnly = true;
-            this.richTextBoxLog.Size = new System.Drawing.Size(760, 251);
+            this.richTextBoxLog.Size = new System.Drawing.Size(760, 238);
             this.richTextBoxLog.TabIndex = 7;
             this.richTextBoxLog.Text = "";
             this.richTextBoxLog.TextChanged += new System.EventHandler(this.richTextBoxLog_TextChanged);
+            // 
+            // contextMenuStripRichTextBox
+            // 
+            this.contextMenuStripRichTextBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearToolStripMenuItem});
+            this.contextMenuStripRichTextBox.Name = "contextMenuStripRichTextBox";
+            this.contextMenuStripRichTextBox.Size = new System.Drawing.Size(102, 26);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // buttonStop
             // 
@@ -149,13 +166,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chartServers.BorderlineColor = System.Drawing.Color.DimGray;
             this.chartServers.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea2.AxisX.LabelStyle.Enabled = false;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisX2.MajorGrid.Enabled = false;
-            chartArea2.AxisY.MajorGrid.Enabled = false;
-            chartArea2.AxisY2.MajorGrid.Enabled = false;
-            chartArea2.Name = "ChartAreaServersLA";
-            this.chartServers.ChartAreas.Add(chartArea2);
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX2.MajorGrid.Enabled = false;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY2.MajorGrid.Enabled = false;
+            chartArea1.Name = "ChartAreaServersLA";
+            this.chartServers.ChartAreas.Add(chartArea1);
             this.chartServers.Location = new System.Drawing.Point(12, 56);
             this.chartServers.Name = "chartServers";
             this.chartServers.Size = new System.Drawing.Size(760, 200);
@@ -177,7 +194,7 @@
             // 
             this.textBoxCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCommand.Location = new System.Drawing.Point(12, 530);
+            this.textBoxCommand.Location = new System.Drawing.Point(12, 517);
             this.textBoxCommand.Name = "textBoxCommand";
             this.textBoxCommand.Size = new System.Drawing.Size(552, 20);
             this.textBoxCommand.TabIndex = 0;
@@ -186,7 +203,7 @@
             // buttonSendCommand
             // 
             this.buttonSendCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSendCommand.Location = new System.Drawing.Point(697, 528);
+            this.buttonSendCommand.Location = new System.Drawing.Point(697, 515);
             this.buttonSendCommand.Name = "buttonSendCommand";
             this.buttonSendCommand.Size = new System.Drawing.Size(75, 23);
             this.buttonSendCommand.TabIndex = 2;
@@ -198,7 +215,7 @@
             // 
             this.comboBoxServers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxServers.FormattingEnabled = true;
-            this.comboBoxServers.Location = new System.Drawing.Point(570, 530);
+            this.comboBoxServers.Location = new System.Drawing.Point(570, 517);
             this.comboBoxServers.Name = "comboBoxServers";
             this.comboBoxServers.Size = new System.Drawing.Size(121, 21);
             this.comboBoxServers.TabIndex = 1;
@@ -207,25 +224,29 @@
             // 
             this.backgroundWorkerForServers.WorkerSupportsCancellation = true;
             // 
-            // contextMenuStripRichTextBox
+            // statusStripMain
             // 
-            this.contextMenuStripRichTextBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearToolStripMenuItem});
-            this.contextMenuStripRichTextBox.Name = "contextMenuStripRichTextBox";
-            this.contextMenuStripRichTextBox.Size = new System.Drawing.Size(102, 26);
+            this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelBackgroundWorkerStatus});
+            this.statusStripMain.Location = new System.Drawing.Point(0, 540);
+            this.statusStripMain.Name = "statusStripMain";
+            this.statusStripMain.Size = new System.Drawing.Size(782, 22);
+            this.statusStripMain.TabIndex = 8;
+            this.statusStripMain.Text = "statusStrip1";
             // 
-            // clearToolStripMenuItem
+            // toolStripStatusLabelBackgroundWorkerStatus
             // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            this.toolStripStatusLabelBackgroundWorkerStatus.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripStatusLabelBackgroundWorkerStatus.Name = "toolStripStatusLabelBackgroundWorkerStatus";
+            this.toolStripStatusLabelBackgroundWorkerStatus.Size = new System.Drawing.Size(76, 17);
+            this.toolStripStatusLabelBackgroundWorkerStatus.Text = "BGW: Servers";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 562);
+            this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.comboBoxServers);
             this.Controls.Add(this.buttonSendCommand);
             this.Controls.Add(this.textBoxCommand);
@@ -244,8 +265,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuStripMainMenu.ResumeLayout(false);
             this.menuStripMainMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartServers)).EndInit();
             this.contextMenuStripRichTextBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartServers)).EndInit();
+            this.statusStripMain.ResumeLayout(false);
+            this.statusStripMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,6 +295,8 @@
         private System.ComponentModel.BackgroundWorker backgroundWorkerForCommand;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripRichTextBox;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStripMain;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBackgroundWorkerStatus;
 
     }
 }

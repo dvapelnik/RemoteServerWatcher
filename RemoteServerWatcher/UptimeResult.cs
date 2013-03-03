@@ -14,21 +14,18 @@ namespace RemoteServerWatcher {
         internal string hostName = String.Empty;
 
         internal UptimeResult(string hostName, string uptimeResult) {
-            string[] splitted = uptimeResult.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-
             this.currentDateTime = DateTime.Now;
 
             this.hostName = hostName;
-            //this.time = splitted[0];
-            //this.uptimeDays = Int32.Parse(splitted[2]);
-            //this.userCount = Int32.Parse(splitted[5]);
+
+            string[] splitted = uptimeResult.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             string[] loadAverage = Helper.GetLastItems(splitted, 3);
 
             this.loadAverage = new double[]{
-                Double.Parse(loadAverage[0].Replace('.', ',').Trim(", \n".ToCharArray())),
-                Double.Parse(loadAverage[1].Replace('.', ',').Trim(", \n".ToCharArray())),
-                Double.Parse(loadAverage[2].Replace('.', ',').Trim(", \n".ToCharArray()))
+                    Double.Parse(loadAverage[0].Replace('.', ',').Trim(", \n".ToCharArray())),
+                    Double.Parse(loadAverage[1].Replace('.', ',').Trim(", \n".ToCharArray())),
+                    Double.Parse(loadAverage[2].Replace('.', ',').Trim(", \n".ToCharArray()))
             };
         }
 

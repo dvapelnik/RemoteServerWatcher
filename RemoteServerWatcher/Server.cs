@@ -56,8 +56,8 @@ namespace RemoteServerWatcher {
         }
 
         internal string GetCommandResult(string command) {
-            if (this.sshClient == null) { 
-                InitSshClient(); 
+            if (this.sshClient == null) {
+                InitSshClient();
             }
 
             Renci.SshNet.SshCommand cmd = this.sshClient.CreateCommand(command);

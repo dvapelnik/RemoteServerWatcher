@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Linq;
+using System.Drawing;
 
 namespace RemoteServerWatcher {
     public partial class MainForm : Form {
@@ -73,6 +74,8 @@ namespace RemoteServerWatcher {
 
             backgroundWorkerForCommand.DoWork += backgroundWorkerForCommand_DoWork;
             backgroundWorkerForCommand.RunWorkerCompleted += backgroundWorkerForCommand_RunWorkerCompleted;
+
+            toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Green;
         }
 
         void backgroundWorkerForCommand_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
@@ -92,10 +95,12 @@ namespace RemoteServerWatcher {
         }
 
         void backgroundWorkerForServers_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+            this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Green; }));
             UpdateChart();
         }
 
         void backgroundWorkerForServers_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
+            this.Invoke(new MethodInvoker(delegate { toolStripStatusLabelBackgroundWorkerStatus.ForeColor = Color.Red; }));
             CollectNewUptimeData();
         }
 

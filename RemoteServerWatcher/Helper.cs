@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 
 namespace RemoteServerWatcher {
@@ -17,6 +19,12 @@ namespace RemoteServerWatcher {
 
         internal static List<T> GetLastItems<T>(List<T> list, int count) {
             return list.Skip(Math.Max(0, list.Count - count)).Take(count).ToList();
+        }
+
+        internal static bool ServerIsAvailable(string serverName) {
+            Ping ping = new Ping();
+            PingReply replay = ping.Send(serverName, 100);
+            return replay.Status == IPStatus.Success;
         }
     }
 }
