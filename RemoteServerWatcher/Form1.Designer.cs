@@ -46,10 +46,16 @@
             this.backgroundWorkerForCommand = new System.ComponentModel.BackgroundWorker();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.notifyIconTray = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuStripRichTextBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).BeginInit();
             this.statusStripMain.SuspendLayout();
+            this.contextMenuStripTray.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainMenu
@@ -240,6 +246,39 @@
             this.toolStripStatusLabelTime.Size = new System.Drawing.Size(19, 17);
             this.toolStripStatusLabelTime.Text = "    ";
             // 
+            // notifyIconTray
+            // 
+            this.notifyIconTray.ContextMenuStrip = this.contextMenuStripTray;
+            this.notifyIconTray.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // contextMenuStripTray
+            // 
+            this.contextMenuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem1});
+            this.contextMenuStripTray.Name = "contextMenuStripTray";
+            this.contextMenuStripTray.Size = new System.Drawing.Size(104, 54);
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(100, 6);
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,12 +301,14 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Remote server watcher";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStripMainMenu.ResumeLayout(false);
             this.menuStripMainMenu.PerformLayout();
             this.contextMenuStripRichTextBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartServers)).EndInit();
             this.statusStripMain.ResumeLayout(false);
             this.statusStripMain.PerformLayout();
+            this.contextMenuStripTray.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -296,6 +337,11 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelTime;
+        private System.Windows.Forms.NotifyIcon notifyIconTray;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTray;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
 
     }
 }

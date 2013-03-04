@@ -15,6 +15,10 @@ namespace RemoteServerWatcher {
         public const string TimerInterval = "timer-interval-seconds";
         public const string StartTimerOnLoad = "start-timer-on-load";
         public const string ChartRange = "chart-range";
+
+        public const string GrayIcon = "grey_icon.ico";
+        public const string GreenIcon = "green_icon.ico";
+        public const string RedIcon = "red_icon.ico";
         #endregion
 
         private string dataStorageFileNameOptions = "settings.xml";
@@ -74,6 +78,8 @@ namespace RemoteServerWatcher {
 
             backgroundWorkerForCommand.DoWork += backgroundWorkerForCommand_DoWork;
             backgroundWorkerForCommand.RunWorkerCompleted += backgroundWorkerForCommand_RunWorkerCompleted;
+
+            notifyIconTray.Text = this.Text;
         }
 
         void backgroundWorkerForCommand_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
@@ -105,6 +111,9 @@ namespace RemoteServerWatcher {
         private void SetStopStartButtonStatus() {
             buttonStart.Enabled = !timer.Enabled;
             buttonStop.Enabled = timer.Enabled;
+
+            notifyIconTray.Icon = timer.Enabled ? Properties.Resources.green_icon : Properties.Resources.grey_icon;
+            this.Icon = notifyIconTray.Icon;
         }
 
         internal void UpdateServesComboBox() {
@@ -369,6 +378,20 @@ namespace RemoteServerWatcher {
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e) {
             richTextBoxLog.Clear();
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e) {
+            if (this.WindowState == FormWindowState.Minimized) {
+                notifyIconTray.Visible = true;
+                this.Hide();
+            }
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Show();
+            this.BringToFront();
+            this.WindowState = FormWindowState.Normal;
+            notifyIconTray.Visible = false;
         }
     }
 }
