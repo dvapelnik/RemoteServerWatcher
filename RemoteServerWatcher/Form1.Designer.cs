@@ -77,7 +77,7 @@
             this.exitToolStripMenuItem});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fIleToolStripMenuItem.Text = "FIle";
+            this.fIleToolStripMenuItem.Text = "File";
             // 
             // remoteServersToolStripMenuItem
             // 
@@ -249,6 +249,7 @@
             // notifyIconTray
             // 
             this.notifyIconTray.ContextMenuStrip = this.contextMenuStripTray;
+            this.notifyIconTray.Visible = true;
             this.notifyIconTray.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
             // contextMenuStripTray

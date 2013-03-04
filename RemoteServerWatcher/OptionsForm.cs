@@ -17,6 +17,10 @@ namespace RemoteServerWatcher {
 
             checkBoxMonitorAutostart.Checked = mainForm.storage.GetOption(MainForm.StartTimerOnLoad) == "1";
             comboBoxTimerInterval.Text = (Int32.Parse(mainForm.storage.GetOption(MainForm.TimerInterval)) / 1000).ToString();
+            checkBoxOverloadAlert.Checked = mainForm.storage.GetOption(MainForm.AlertOnOverload) == "1";
+            comboBoxOverloadValue.Text = mainForm.storage.GetOption(MainForm.OverloadValue);
+            comboBoxOverloadAlertPeriod.Text = mainForm.storage.GetOption(MainForm.OverloadAlertPeriodMinutes);
+            comboBoxOverloadAlertBallonIntervalToShow.Text = mainForm.storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e) {
@@ -25,9 +29,13 @@ namespace RemoteServerWatcher {
 
         private void buttonOk_Click(object sender, EventArgs e) {
             mainForm.storage.UpdateOption(MainForm.StartTimerOnLoad, checkBoxMonitorAutostart.Checked ? "1" : "0");
+            mainForm.storage.UpdateOption(MainForm.AlertOnOverload, checkBoxOverloadAlert.Checked ? "1" : "0");
             if (mainForm.storage.UpdateOption(MainForm.TimerInterval, (Int32.Parse(comboBoxTimerInterval.Text) * 1000).ToString())) {
                 mainForm.timer.Interval = Int32.Parse(comboBoxTimerInterval.Text) * 1000;
             }
+            mainForm.storage.UpdateOption(MainForm.OverloadValue, comboBoxOverloadValue.Text);
+            mainForm.storage.UpdateOption(MainForm.OverloadAlertPeriodMinutes, comboBoxOverloadAlertPeriod.Text);
+            mainForm.storage.UpdateOption(MainForm.OverloadAlertBalloonIntervalToShowSecond, comboBoxOverloadAlertBallonIntervalToShow.Text);
             this.Close();
         }
 

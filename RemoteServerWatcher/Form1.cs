@@ -15,6 +15,10 @@ namespace RemoteServerWatcher {
         public const string TimerInterval = "timer-interval-seconds";
         public const string StartTimerOnLoad = "start-timer-on-load";
         public const string ChartRange = "chart-range";
+        public const string OverloadValue = "overload-value";
+        public const string AlertOnOverload = "0";
+        public const string OverloadAlertPeriodMinutes = "overload-alert-period";
+        public const string OverloadAlertBalloonIntervalToShowSecond = "overload-alert-ballon-interval-to-show";
 
         public const string GrayIcon = "grey_icon.ico";
         public const string GreenIcon = "green_icon.ico";
@@ -23,6 +27,8 @@ namespace RemoteServerWatcher {
 
         private string dataStorageFileNameOptions = "settings.xml";
         private string dataStorageFileNameServers = "servers.xml";
+
+        private DateTime lastOverloadAlertDateTimeMoment = DateTime.MinValue;
 
         public DataProtectionScope scope;
         private Cryptor cryptor;
@@ -80,6 +86,9 @@ namespace RemoteServerWatcher {
             backgroundWorkerForCommand.RunWorkerCompleted += backgroundWorkerForCommand_RunWorkerCompleted;
 
             notifyIconTray.Text = this.Text;
+            notifyIconTray.BalloonTipShown += delegate(object sender, EventArgs e) {
+                this.lastOverloadAlertDateTimeMoment = DateTime.Now;
+            };
         }
 
         void backgroundWorkerForCommand_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
@@ -155,6 +164,18 @@ namespace RemoteServerWatcher {
                     _series.IsXValueIndexed = false;
                     _series.BorderWidth = 2;
                     List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
+
+                    TimeSpan optionOverloadOptionPeriod = new TimeSpan(0, Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertPeriodMinutes)), 0);
+
+                    if (this.storage.GetOption(MainForm.AlertOnOverload) == "1" && 
+                        _points[_points.Count - 1].YValues[0] >= Double.Parse(this.storage.GetOption(MainForm.OverloadValue)) && 
+                        DateTime.Now - this.lastOverloadAlertDateTimeMoment > optionOverloadOptionPeriod) {
+                            notifyIconTray.BalloonTipIcon = ToolTipIcon.Warning;
+                            notifyIconTray.BalloonTipText = String.Format("Load average is {0}", _points[_points.Count - 1].YValues[0].ToString());
+                            notifyIconTray.BalloonTipTitle = String.Format("[{0}] Alert!", _server.host);
+                            notifyIconTray.ShowBalloonTip(Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond)));
+                    }
+
                     epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
                     epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
                     loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
@@ -204,6 +225,10 @@ namespace RemoteServerWatcher {
             this.storage.AddOption(TimerInterval, "5000");
             this.storage.AddOption(StartTimerOnLoad, "0");
             this.storage.AddOption(ChartRange, "20");
+            this.storage.AddOption(OverloadValue, "100");
+            this.storage.AddOption(AlertOnOverload, "0");
+            this.storage.AddOption(OverloadAlertPeriodMinutes, "5");
+            this.storage.AddOption(OverloadAlertBalloonIntervalToShowSecond, "10");
         }
 
         private void GenerateDefaultServers() {
@@ -374,7 +399,6 @@ namespace RemoteServerWatcher {
             richTextBoxLog.SelectionStart = richTextBoxLog.Text.Length;
             richTextBoxLog.ScrollToCaret();
         }
-        #endregion
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e) {
             richTextBoxLog.Clear();
@@ -382,7 +406,7 @@ namespace RemoteServerWatcher {
 
         private void MainForm_Resize(object sender, EventArgs e) {
             if (this.WindowState == FormWindowState.Minimized) {
-                notifyIconTray.Visible = true;
+                //notifyIconTray.Visible = true;
                 this.Hide();
             }
         }
@@ -391,7 +415,9 @@ namespace RemoteServerWatcher {
             this.Show();
             this.BringToFront();
             this.WindowState = FormWindowState.Normal;
-            notifyIconTray.Visible = false;
+            //notifyIconTray.Visible = false;
         }
+        #endregion
+
     }
 }
