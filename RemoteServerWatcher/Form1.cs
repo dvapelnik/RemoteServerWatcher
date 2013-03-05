@@ -16,7 +16,7 @@ namespace RemoteServerWatcher {
         public const string StartTimerOnLoad = "start-timer-on-load";
         public const string ChartRange = "chart-range";
         public const string OverloadValue = "overload-value";
-        public const string AlertOnOverload = "0";
+        public const string AlertOnOverload = "alert-on-overload";
         public const string OverloadAlertPeriodMinutes = "overload-alert-period";
         public const string OverloadAlertBalloonIntervalToShowSecond = "overload-alert-ballon-interval-to-show";
 
@@ -147,15 +147,13 @@ namespace RemoteServerWatcher {
         }
 
         private void UpdateChart() {
-            chartServers.Series.Clear();
-
             List<double> loadAvereageMaximums = new List<double>();
             List<double> epocheMaximums = new List<double>();
             List<double> epocheMinimums = new List<double>();
 
-            chartServers.Series.Clear();
-
             Dictionary<string, double> lastLoadAverage = new Dictionary<string, double>();
+
+            chartServers.Series.Clear();
 
             foreach (Server _server in storage.servers) {
                 if (_server.enabled) {
@@ -166,44 +164,15 @@ namespace RemoteServerWatcher {
                     _series.BorderWidth = 2;
                     List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
 
-                    TimeSpan optionOverloadOptionPeriod = new TimeSpan(0, Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertPeriodMinutes)), 0);
-
-                    #region SHOW ALL SERVERS WHERE LA >= OVERLOADVALUE
-                    throw new NotImplementedException("SHOW ALL SERVERS WHERE LA >= OVERLOADVALUE");
-                    if (this.storage.GetOption(MainForm.AlertOnOverload) == "1") {
-                        if (_points[_points.Count - 1].YValues[0] >= Double.Parse(this.storage.GetOption(MainForm.OverloadValue))) {
-                            if (DateTime.Now - this.lastOverloadAlertDateTimeMoment > optionOverloadOptionPeriod) {
-                                notifyIconTray.BalloonTipIcon = ToolTipIcon.Warning;
-                                notifyIconTray.BalloonTipText = String.Format("Load average is {0:0.00}", _points[_points.Count - 1].YValues[0].ToString());
-                                notifyIconTray.BalloonTipTitle = String.Format("[{0}] Alert!", _server.host);
-                                notifyIconTray.ShowBalloonTip(Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond)));
-                            }
-
-                            SetIcons(Properties.Resources.red_icon);
-                        } else {
-                            SetIcons(Properties.Resources.green_icon);
-                        }
-                    } else {
-                        SetIcons(Properties.Resources.green_icon);
-                    }
-
-                    #endregion
-
                     lastLoadAverage.Add(_server.name, _points[_points.Count - 1].YValues[0]);
 
                     epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
                     epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
                     loadAvereageMaximums.Add((double)(from DataPoint _point in _points select _point.YValues[0]).Max());
-                    foreach (DataPoint _point in _points) {
-                        _series.Points.Add(_point);
-                    }
 
-                    chartServers.Series.Add(_series);
+                    _points.ForEach(delegate(DataPoint _point) { _series.Points.Add(_point); });
 
-                    List<string> _list = new List<string>(new string[] { this.Text }.ToList());
-                    _list.AddRange((from KeyValuePair<string, double> pair in lastLoadAverage select String.Format("{0}: {1:0.00}", pair.Key, pair.Value)).ToList());
-
-                    notifyIconTray.Text = String.Join(Environment.NewLine, _list.ToArray());
+                     chartServers.Series.Add(_series);
                 }
             }
 
@@ -214,6 +183,29 @@ namespace RemoteServerWatcher {
             if (chartServers.Legends.FindByName("Servers") == null) {
                 chartServers.Legends.Add(new Legend("Servers") { Title = "Servers" });
             }
+
+            string lastLoadAverageJoined = String.Join(Environment.NewLine, (from KeyValuePair<string, double> _pair in lastLoadAverage select String.Format("{0}: {1:0.00}", _pair.Key, _pair.Value)).ToArray());
+            notifyIconTray.Text = String.Format("{0}\n{1}", this.Text, lastLoadAverageJoined);
+
+            #region Overload alert
+            List<string> _lastOverloadedServers = (
+                        from KeyValuePair<string, double> _pair
+                            in lastLoadAverage
+                        where _pair.Value >= Double.Parse(storage.GetOption(MainForm.OverloadValue))
+                        select String.Format("{0}: {1:0.00}", _pair.Key, _pair.Value)).ToList();
+            if (_lastOverloadedServers.Count == 0) {
+                SetIcons(Properties.Resources.green_icon);
+            } else {
+                SetIcons(Properties.Resources.red_icon);
+                TimeSpan _timeSpanWithLastAlert = DateTime.Now - lastOverloadAlertDateTimeMoment;
+                if (storage.GetOption(MainForm.AlertOnOverload) == "1" && _timeSpanWithLastAlert >= new TimeSpan(0, Int32.Parse(storage.GetOption(MainForm.OverloadAlertPeriodMinutes)), 0)) {
+                    notifyIconTray.BalloonTipIcon = ToolTipIcon.Warning;
+                    notifyIconTray.BalloonTipTitle = "Overloaded!";
+                    notifyIconTray.BalloonTipText = String.Join(Environment.NewLine, _lastOverloadedServers.ToArray());
+                    notifyIconTray.ShowBalloonTip(Int32.Parse(storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond)));
+                }
+            }
+            #endregion
         }
 
         private void SetIcons(Icon icon) {
