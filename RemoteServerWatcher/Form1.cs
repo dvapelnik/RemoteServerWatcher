@@ -121,8 +121,7 @@ namespace RemoteServerWatcher {
             buttonStart.Enabled = !timer.Enabled;
             buttonStop.Enabled = timer.Enabled;
 
-            notifyIconTray.Icon = timer.Enabled ? Properties.Resources.green_icon : Properties.Resources.grey_icon;
-            this.Icon = notifyIconTray.Icon;
+            SetIcons(timer.Enabled ? Properties.Resources.green_icon : Properties.Resources.grey_icon);
         }
 
         internal void UpdateServesComboBox() {
@@ -156,6 +155,8 @@ namespace RemoteServerWatcher {
 
             chartServers.Series.Clear();
 
+            Dictionary<string, double> lastLoadAverage = new Dictionary<string, double>();
+
             foreach (Server _server in storage.servers) {
                 if (_server.enabled) {
                     if (!_server.isAvailable) continue;
@@ -167,14 +168,28 @@ namespace RemoteServerWatcher {
 
                     TimeSpan optionOverloadOptionPeriod = new TimeSpan(0, Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertPeriodMinutes)), 0);
 
-                    if (this.storage.GetOption(MainForm.AlertOnOverload) == "1" && 
-                        _points[_points.Count - 1].YValues[0] >= Double.Parse(this.storage.GetOption(MainForm.OverloadValue)) && 
-                        DateTime.Now - this.lastOverloadAlertDateTimeMoment > optionOverloadOptionPeriod) {
-                            notifyIconTray.BalloonTipIcon = ToolTipIcon.Warning;
-                            notifyIconTray.BalloonTipText = String.Format("Load average is {0}", _points[_points.Count - 1].YValues[0].ToString());
-                            notifyIconTray.BalloonTipTitle = String.Format("[{0}] Alert!", _server.host);
-                            notifyIconTray.ShowBalloonTip(Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond)));
+                    #region SHOW ALL SERVERS WHERE LA >= OVERLOADVALUE
+                    throw new NotImplementedException("SHOW ALL SERVERS WHERE LA >= OVERLOADVALUE");
+                    if (this.storage.GetOption(MainForm.AlertOnOverload) == "1") {
+                        if (_points[_points.Count - 1].YValues[0] >= Double.Parse(this.storage.GetOption(MainForm.OverloadValue))) {
+                            if (DateTime.Now - this.lastOverloadAlertDateTimeMoment > optionOverloadOptionPeriod) {
+                                notifyIconTray.BalloonTipIcon = ToolTipIcon.Warning;
+                                notifyIconTray.BalloonTipText = String.Format("Load average is {0:0.00}", _points[_points.Count - 1].YValues[0].ToString());
+                                notifyIconTray.BalloonTipTitle = String.Format("[{0}] Alert!", _server.host);
+                                notifyIconTray.ShowBalloonTip(Int32.Parse(this.storage.GetOption(MainForm.OverloadAlertBalloonIntervalToShowSecond)));
+                            }
+
+                            SetIcons(Properties.Resources.red_icon);
+                        } else {
+                            SetIcons(Properties.Resources.green_icon);
+                        }
+                    } else {
+                        SetIcons(Properties.Resources.green_icon);
                     }
+
+                    #endregion
+
+                    lastLoadAverage.Add(_server.name, _points[_points.Count - 1].YValues[0]);
 
                     epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
                     epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
@@ -184,6 +199,11 @@ namespace RemoteServerWatcher {
                     }
 
                     chartServers.Series.Add(_series);
+
+                    List<string> _list = new List<string>(new string[] { this.Text }.ToList());
+                    _list.AddRange((from KeyValuePair<string, double> pair in lastLoadAverage select String.Format("{0}: {1:0.00}", pair.Key, pair.Value)).ToList());
+
+                    notifyIconTray.Text = String.Join(Environment.NewLine, _list.ToArray());
                 }
             }
 
@@ -194,6 +214,11 @@ namespace RemoteServerWatcher {
             if (chartServers.Legends.FindByName("Servers") == null) {
                 chartServers.Legends.Add(new Legend("Servers") { Title = "Servers" });
             }
+        }
+
+        private void SetIcons(Icon icon) {
+            this.Icon = icon;
+            notifyIconTray.Icon = icon;
         }
 
         #region Options and servers
