@@ -164,7 +164,12 @@ namespace RemoteServerWatcher {
                     _series.BorderWidth = 2;
                     List<DataPoint> _points = _server.GetLastPoints(Int32.Parse(storage.GetOption(ChartRange)));
 
-                    lastLoadAverage.Add(_server.name, _points[_points.Count - 1].YValues[0]);
+                    double lastLA = _points[_points.Count - 1].YValues[0];
+
+                    _series.LegendText = String.Format("{0} ({1:0.00})", _server.name, lastLA);
+                    _series.LegendToolTip = _server.host;
+
+                    lastLoadAverage.Add(_server.name, lastLA);
 
                     epocheMinimums.Add((double)(from DataPoint _point in _points select _point.XValue).Min());
                     epocheMaximums.Add((double)(from DataPoint _point in _points select _point.XValue).Max());
@@ -172,7 +177,7 @@ namespace RemoteServerWatcher {
 
                     _points.ForEach(delegate(DataPoint _point) { _series.Points.Add(_point); });
 
-                     chartServers.Series.Add(_series);
+                    chartServers.Series.Add(_series);
                 }
             }
 
