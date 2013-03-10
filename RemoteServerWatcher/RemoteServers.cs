@@ -87,6 +87,11 @@ namespace RemoteServerWatcher {
         }
 
         private void buttonAddNewServer_Click(object sender, EventArgs e) {
+            if (textBoxHostName.Text.Length == 0 | textBoxLogin.Text.Length == 0 | textBoxPassword.Text.Length == 0) {
+                MessageBox.Show("Fill fields please");
+                return;
+            }
+
             if (textBoxName.Text.Length == 0) {
                 textBoxName.Text = textBoxHostName.Text;
             }

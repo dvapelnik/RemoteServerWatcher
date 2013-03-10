@@ -362,17 +362,29 @@ namespace RemoteServerWatcher {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            e.Cancel = backgroundWorkerForCommand.IsBusy;
+            Action act = delegate() {
+                e.Cancel = false;
+                this.timer.Stop();
+                this.timer.Dispose();
 
-            this.timer.Stop();
-            this.timer.Dispose();
+                foreach (Server _server in this.storage.servers) {
+                    _server.UnInitSshClient();
+                }
 
-            foreach (Server _server in this.storage.servers) {
-                _server.UnInitSshClient();
+                this.SaveOptionsToFile();
+                this.SaveServersToFile();
+            };
+
+            if (backgroundWorkerForServers.IsBusy | backgroundWorkerForCommand.IsBusy) {
+                e.Cancel = true;
+                System.ComponentModel.RunWorkerCompletedEventHandler closeForm = delegate(object _sender, System.ComponentModel.RunWorkerCompletedEventArgs _e) {
+                    act.Invoke();
+                };
+                backgroundWorkerForServers.RunWorkerCompleted += closeForm;
+                backgroundWorkerForCommand.RunWorkerCompleted += closeForm;
+            } else {
+                act.Invoke();
             }
-
-            this.SaveOptionsToFile();
-            this.SaveServersToFile();
         }
 
         private void preToolStripMenuItem_Click(object sender, EventArgs e) {
